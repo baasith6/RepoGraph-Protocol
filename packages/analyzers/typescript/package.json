@@ -15,8 +15,10 @@
     "test": "echo no tests",
     "lint": "tsc --noEmit"
   },
+  "dependencies": {
+    "typescript": "^5.7.2"
+  },
   "devDependencies": {
-    "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }
 }

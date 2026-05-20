@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 function getImportMetaUrl(): string | undefined {
   try {
@@ -12,9 +12,10 @@ function getImportMetaUrl(): string | undefined {
   }
 }
 
-const __dirname = path.dirname(
-  fileURLToPath(getImportMetaUrl() ?? pathToFileURL(__filename).toString())
-);
+const metaUrl = getImportMetaUrl();
+const __dirname = metaUrl
+  ? path.dirname(fileURLToPath(metaUrl))
+  : process.cwd();
 
 export interface RoslynFileDependency {
   source: string;

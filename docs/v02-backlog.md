@@ -1,48 +1,66 @@
-# RepoGraph v0.2 Backlog
+# RepoGraph Backlog
 
-Items deferred from v0.1 to keep the initial release focused.
+Status as of v0.2.1. See [v0.3 roadmap](#v03-deferred) for next work.
 
-## Analyzers
+## Completed in v0.2.x
 
-- [ ] **Roslyn-based C# analyzer** (`repograph-analyzer-csharp` v2)
-  - Symbol-level index (classes, methods, interfaces)
-  - Accurate dependency resolution across projects
-  - Entity/model extraction from EF configurations
+### Analyzers
 
-- [ ] **TypeScript compiler API analyzer**
-  - Angular route and DI graph
-  - Accurate import resolution via `tsconfig.json`
+- [x] **Roslyn-based C# analyzer** (`tools/repograph-roslyn`, `@repograph/analyzer-csharp-roslyn`)
+  - Symbol index, project references, API endpoints (when .NET SDK + MSBuild available)
+  - Falls back to heuristic analyzer for npm global install / CI without MSBuild
 
-## Protocol Extensions
+- [x] **TypeScript compiler API analyzer** (v0.3 — `packages/analyzers/typescript`)
+  - tsconfig-aware import resolution when `tsconfig.json` is present
 
-- [ ] `api.yml` — auto-detect from controllers/routes
-- [ ] `database.yml` — EF migrations and entity mapping
+### Protocol Extensions
+
+- [x] `api.yml`, `database.yml`, `risk.yml`, `ownership.yml`, `glossary.yml` — stubs in `repograph init`
+- [x] `api.yml` / `database.yml` — auto-populated from scan when endpoints/entities are detected (v0.3)
+
+### CLI
+
+- [x] `repograph diff` — compare graph between git refs
+- [x] npm publish `@repographprotocol/cli` with bundled distribution
+
+### Integrations
+
+- [x] **GitHub Composite Action** (`action/action.yml`)
+- [x] **MCP server** (`apps/mcp-server`) — graph, explain, impact, violations tools (v0.3)
+- [x] **VS Code extension** (`apps/vscode`) — module tree + violations panel (read-only, v0.3)
+
+## v0.3 deferred
+
+### Analyzers
+
+- [ ] EF configuration / migration parsing for `database.yml`
+- [ ] Angular route and DI graph (full compiler integration)
+
+### Protocol Extensions
+
 - [ ] `ownership.yml` — CODEOWNERS import/export
-- [ ] `risk.yml` — path-based risk scoring
-- [ ] `glossary.yml` — domain terminology
+- [ ] `risk.yml` — automated path-based risk scoring
+- [ ] `glossary.yml` — term extraction from code/comments
 
-## CLI
+### CLI
 
-- [ ] `repograph diff` — compare graph between branches
-- [ ] `repograph validate` — validate generated graph against live code
+- [ ] `repograph validate` — validate generated graph against live code drift
 
-## Integrations
+### Integrations
 
-- [ ] **MCP server** (`apps/mcp-server`) — expose graph and explain over MCP
-- [ ] **VS Code extension** — module sidebar, architecture warnings, impact preview
 - [ ] Azure DevOps pipeline task
 - [ ] GitLab CI template
+- [ ] GitHub Marketplace listing for the action
 
-## Infrastructure
+### Infrastructure
 
 - [ ] SQLite cache for incremental scans
 - [ ] Plugin system for custom analyzers and exporters
 - [ ] Dashboard (`apps/dashboard`) for graph visualization
 
-## Priority Order
+## Priority Order (v0.3+)
 
-1. Roslyn C# analyzer (highest value for .NET teams)
-2. `repograph diff` for PR reviews
-3. MCP server for AI tool integration
-4. VS Code extension (read-only module sidebar first)
-5. `api.yml` and `database.yml` auto-population
+1. CODEOWNERS → `ownership.yml` sync
+2. Incremental scan cache
+3. Plugin system
+4. Azure DevOps / GitLab templates

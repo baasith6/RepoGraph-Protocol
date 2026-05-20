@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 function getImportMetaUrl(): string | undefined {
   try {
@@ -12,8 +12,8 @@ function getImportMetaUrl(): string | undefined {
 }
 
 export function resolveSchemaDir(): string {
-  const metaUrl = getImportMetaUrl() ?? pathToFileURL(__filename).toString();
-  const __dirname = path.dirname(fileURLToPath(metaUrl));
+  const metaUrl = getImportMetaUrl();
+  const __dirname = metaUrl ? path.dirname(fileURLToPath(metaUrl)) : process.cwd();
   const candidates = [
     path.join(__dirname, "schemas"),
     path.join(__dirname, "..", "schemas"),

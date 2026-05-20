@@ -1,3 +1,5 @@
+export { analyzeTypeScriptProject } from "./compiler.js";
+
 const IMPORT_REGEX =
   /import\s+(?:(?:\{[^}]*\}|\*\s+as\s+\w+|\w+)(?:\s*,\s*(?:\{[^}]*\}|\w+))*\s+from\s+)?['"]([^'"]+)['"]/g;
 const ANGULAR_COMPONENT_REGEX = /@Component\s*\(\s*\{[^}]*\}/;

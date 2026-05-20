@@ -59,10 +59,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: baasith6/RepoGraph-Protocol/action@v0.1.1
+      - uses: baasith6/RepoGraph-Protocol/action@v0.2.1
         with:
           fail-on: error
 ```
+
+## Roslyn (optional)
+
+Accurate C# analysis requires .NET SDK and MSBuild (e.g. Visual Studio Build Tools on Windows).  
+`npm install -g @repographprotocol/cli` uses heuristic C# analysis by default.
 
 ## Next steps
 

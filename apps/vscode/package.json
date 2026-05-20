@@ -1,0 +1,49 @@
+{
+  "name": "repograph-vscode",
+  "displayName": "RepoGraph Protocol",
+  "description": "Read-only module tree and architecture violations from .repograph/generated/graph.json",
+  "version": "0.3.0",
+  "private": true,
+  "publisher": "repographprotocol",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "workspaceContains:.repograph/project.yml"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "repographModules",
+          "name": "RepoGraph Modules"
+        },
+        {
+          "id": "repographViolations",
+          "name": "RepoGraph Violations"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "repograph.refresh",
+        "title": "RepoGraph: Refresh Views"
+      },
+      {
+        "command": "repograph.openGraph",
+        "title": "RepoGraph: Open graph.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.7.2"
+  }
+}

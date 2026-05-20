@@ -1,15 +1,28 @@
 {
   "name": "@repograph/mcp-server",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "MCP server stub - see docs/v02-backlog.md",
+  "description": "MCP server exposing RepoGraph graph, explain, impact, and violations",
   "type": "module",
+  "bin": {
+    "repograph-mcp": "./dist/index.js"
+  },
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
+    "start": "node dist/index.js",
     "lint": "tsc --noEmit"
   },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "@repograph/graph-core": "workspace:*",
+    "@repograph/rule-engine": "workspace:*",
+    "@repograph/scanner-core": "workspace:*",
+    "@repograph/shared": "workspace:*",
+    "zod": "^3.24.0"
+  },
   "devDependencies": {
+    "@types/node": "^22.10.0",
     "typescript": "^5.7.2"
   }
 }

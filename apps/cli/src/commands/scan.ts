@@ -5,7 +5,7 @@ import { exportMermaid } from "@repograph/exporter-mermaid";
 import { exportContextPack } from "@repograph/exporter-markdown";
 import { checkArchitectureRules, getEnforcementMode } from "@repograph/rule-engine";
 import { buildGraphFromScan, scanRepository } from "@repograph/scanner-core";
-import { getGeneratedDir, log } from "@repograph/shared";
+import { getGeneratedDir, log, syncProtocolFromScan } from "@repograph/shared";
 import { loadConfig, getRoot } from "../context.js";
 
 export async function scanRepositoryAndWrite(): Promise<void> {
@@ -45,6 +45,14 @@ export async function scanRepositoryAndWrite(): Promise<void> {
     exportContextPack(graph, config),
     "utf-8"
   );
+
+  const syncResult = await syncProtocolFromScan(root, scan, config.modules);
+  if (syncResult.apiUpdated) {
+    log("info", "Updated .repograph/api.yml from scan");
+  }
+  if (syncResult.databaseUpdated) {
+    log("info", "Updated .repograph/database.yml from scan");
+  }
 
   log("info", `Scan complete (${scan.analyzer}): ${graph.stats.fileCount} files, ${graph.stats.moduleCount} modules`);
   log("info", `Dependencies: ${graph.stats.dependencyCount}, Unmapped: ${graph.stats.unmappedFiles}`);

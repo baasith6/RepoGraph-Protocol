@@ -48,11 +48,14 @@ See [docs/quickstart.md](docs/quickstart.md) for the full guide.
 ## GitHub Actions
 
 ```yaml
-- uses: baasith6/RepoGraph-Protocol/action@v0.2.0
+- uses: baasith6/RepoGraph-Protocol/action@v0.2.1
   with:
+    working-directory: .
     fail-on: error
     comment-pr: true
 ```
+
+Pin to `@0.2.1` or later. **Do not use `@0.2.0`** — that npm release fails at runtime.
 
 ## The `.repograph` Protocol
 
@@ -88,6 +91,21 @@ repograph check
 repograph explain -m Auth
 ```
 
+## MCP Server (AI tools)
+
+```bash
+pnpm build
+# From a repo with .repograph/ initialized:
+REPOGRAPH_ROOT=/path/to/your/repo node apps/mcp-server/dist/index.js
+```
+
+Tools: `repograph_get_graph`, `repograph_explain`, `repograph_list_violations`, `repograph_impact`, `repograph_scan`.
+
+## VS Code Extension
+
+Open `apps/vscode` in VS Code and press F5, or build with `pnpm --filter repograph-vscode build`.  
+Shows **RepoGraph Modules** and **RepoGraph Violations** in the Explorer when `.repograph/project.yml` exists.
+
 ## Development
 
 ```bash
@@ -97,11 +115,13 @@ pnpm test
 pnpm repograph -- --help
 ```
 
-Roslyn analyzer (optional, requires .NET 8 SDK):
+Roslyn analyzer (optional, requires .NET 8 SDK + MSBuild on PATH):
 
 ```bash
 dotnet build tools/repograph-roslyn/Repograph.Roslyn.csproj
 ```
+
+Global npm install uses **heuristic** C# analysis unless Roslyn is available locally.
 
 ## License
 

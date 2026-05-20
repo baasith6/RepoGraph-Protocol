@@ -18,13 +18,13 @@ function protocolStubFiles(): TemplateFile[] {
   return [
     {
       path: "api.yml",
-      content: `# Map HTTP endpoints to modules (auto-fill planned v0.3)
+      content: `# Map HTTP endpoints to modules (auto-filled on repograph scan when detected)
 apis: []
 `,
     },
     {
       path: "database.yml",
-      content: `# Map database entities to modules (auto-fill planned v0.3)
+      content: `# Map database entities to modules (auto-filled on repograph scan when detected)
 database:
   provider: unknown
   entities: []

@@ -19,7 +19,7 @@ import type { RepographConfig } from "@repograph/shared";
 import { normalizePath } from "@repograph/shared";
 import { analyzeCSharpFile, analyzeCsproj } from "@repograph/analyzer-csharp";
 import { runRoslynAnalyzer } from "@repograph/analyzer-csharp-roslyn";
-import { analyzeTypeScriptFile } from "@repograph/analyzer-typescript";
+import { analyzeTypeScriptFile, analyzeTypeScriptProject } from "@repograph/analyzer-typescript";
 import type { FileDependency, ScanResult, ScannedFile } from "./types.js";
 
 const CODE_EXTENSIONS: Record<string, string> = {
@@ -122,6 +122,7 @@ export async function scanRepository(
   });
 
   const files: ScannedFile[] = [];
+  const tsSourcePaths: string[] = [];
   let dependencies: FileDependency[] = [];
   const unmappedFiles: string[] = [];
   let symbols: ScanResult["symbols"] = [];
@@ -171,16 +172,35 @@ export async function scanRepository(
       extension: ext,
     });
 
+    if (language === "typescript" || language === "javascript") {
+      tsSourcePaths.push(normalized);
+    }
+
     const fullPath = path.join(root, normalized);
     try {
       const content = await fs.readFile(fullPath, "utf-8");
       if (language === "csharp") {
         dependencies.push(...analyzeCSharpFile(normalized, content));
-      } else if (language === "typescript" || language === "javascript") {
-        dependencies.push(...analyzeTypeScriptFile(normalized, content));
       }
     } catch {
       // skip unreadable files
+    }
+  }
+
+  const tsProjectDeps = analyzeTypeScriptProject(root, tsSourcePaths);
+  if (tsProjectDeps && tsProjectDeps.length > 0) {
+    dependencies.push(...tsProjectDeps);
+    if (analyzer === "heuristic") {
+      analyzer = "heuristic";
+    }
+  } else {
+    for (const normalized of tsSourcePaths) {
+      try {
+        const content = await fs.readFile(path.join(root, normalized), "utf-8");
+        dependencies.push(...analyzeTypeScriptFile(normalized, content));
+      } catch {
+        // skip
+      }
     }
   }
 

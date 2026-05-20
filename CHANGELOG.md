@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- MCP server (`apps/mcp-server`) with tools: get_graph, explain, list_violations, impact, scan
+- VS Code extension (`apps/vscode`) — module tree and violations panel
+- TypeScript compiler API analyzer when `tsconfig.json` is present
+- Auto-sync `api.yml` and `database.yml` from scan results
+- CI jobs for published npm CLI and composite action
+- [SECURITY.md](SECURITY.md), [docs/dogfood-report.md](docs/dogfood-report.md)
+
+### Fixed
+
+- ESM `__filename` crash in `@repograph/analyzer-csharp-roslyn` when running CLI from monorepo
+
 ## [0.2.1] - 2026-05-20
 
 ### Fixed

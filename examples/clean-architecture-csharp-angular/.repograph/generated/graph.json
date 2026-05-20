@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "generatedAt": "2026-05-20T06:40:29.746Z",
+  "generatedAt": "2026-05-20T07:52:02.645Z",
   "project": {
     "name": "CarRentalExample",
     "root": "F:\\tic\\Repograph\\examples\\clean-architecture-csharp-angular",
@@ -101,18 +101,18 @@
       }
     },
     {
-      "id": "file:src/Web/Auth/AuthController.cs",
+      "id": "file:src/Web/Booking/BookingController.cs",
       "type": "FILE",
-      "label": "src/Web/Auth/AuthController.cs",
+      "label": "src/Web/Booking/BookingController.cs",
       "metadata": {
         "language": "csharp",
         "extension": ".cs"
       }
     },
     {
-      "id": "file:src/Web/Booking/BookingController.cs",
+      "id": "file:src/Web/Auth/AuthController.cs",
       "type": "FILE",
-      "label": "src/Web/Booking/BookingController.cs",
+      "label": "src/Web/Auth/AuthController.cs",
       "metadata": {
         "language": "csharp",
         "extension": ".cs"
@@ -267,25 +267,25 @@
     {
       "id": "edge-10",
       "type": "BELONGS_TO",
-      "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "module:Auth"
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "module:Booking"
     },
     {
       "id": "edge-11",
       "type": "BELONGS_TO",
-      "source": "file:src/Web/Auth/AuthController.cs",
+      "source": "file:src/Web/Booking/BookingController.cs",
       "target": "layer:Web"
     },
     {
       "id": "edge-12",
       "type": "BELONGS_TO",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "module:Booking"
+      "source": "file:src/Web/Auth/AuthController.cs",
+      "target": "module:Auth"
     },
     {
       "id": "edge-13",
       "type": "BELONGS_TO",
-      "source": "file:src/Web/Booking/BookingController.cs",
+      "source": "file:src/Web/Auth/AuthController.cs",
       "target": "layer:Web"
     },
     {
@@ -417,8 +417,8 @@
     {
       "id": "edge-33",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "CarRentalExample.Application.Auth",
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "CarRentalExample.Application.Booking",
       "metadata": {
         "dependencyType": "using"
       }
@@ -426,7 +426,7 @@
     {
       "id": "edge-34",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Auth/AuthController.cs",
+      "source": "file:src/Web/Booking/BookingController.cs",
       "target": "Microsoft.AspNetCore.Mvc",
       "metadata": {
         "dependencyType": "using"
@@ -435,8 +435,8 @@
     {
       "id": "edge-35",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "namespace:CarRentalExample.Web.Auth",
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "namespace:CarRentalExample.Web.Booking",
       "metadata": {
         "dependencyType": "import"
       }
@@ -444,8 +444,8 @@
     {
       "id": "edge-36",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "file:api:api/auth",
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "file:api:api/bookings",
       "metadata": {
         "dependencyType": "import"
       }
@@ -453,8 +453,8 @@
     {
       "id": "edge-37",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "CarRentalExample.Application.Booking",
+      "source": "file:src/Web/Auth/AuthController.cs",
+      "target": "CarRentalExample.Application.Auth",
       "metadata": {
         "dependencyType": "using"
       }
@@ -462,7 +462,7 @@
     {
       "id": "edge-38",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Booking/BookingController.cs",
+      "source": "file:src/Web/Auth/AuthController.cs",
       "target": "Microsoft.AspNetCore.Mvc",
       "metadata": {
         "dependencyType": "using"
@@ -471,8 +471,8 @@
     {
       "id": "edge-39",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "namespace:CarRentalExample.Web.Booking",
+      "source": "file:src/Web/Auth/AuthController.cs",
+      "target": "namespace:CarRentalExample.Web.Auth",
       "metadata": {
         "dependencyType": "import"
       }
@@ -480,8 +480,8 @@
     {
       "id": "edge-40",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "file:api:api/bookings",
+      "source": "file:src/Web/Auth/AuthController.cs",
+      "target": "file:api:api/auth",
       "metadata": {
         "dependencyType": "import"
       }
@@ -669,7 +669,7 @@
     {
       "id": "edge-61",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Web.csproj",
+      "source": "file:src/Infrastructure/Infrastructure.csproj",
       "target": "file:../Application/Application.csproj",
       "metadata": {
         "dependencyType": "project-reference"
@@ -678,8 +678,8 @@
     {
       "id": "edge-62",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Web.csproj",
-      "target": "file:../Infrastructure/Infrastructure.csproj",
+      "source": "file:src/Infrastructure/Infrastructure.csproj",
+      "target": "file:../Domain/Domain.csproj",
       "metadata": {
         "dependencyType": "project-reference"
       }
@@ -687,7 +687,7 @@
     {
       "id": "edge-63",
       "type": "DEPENDS_ON",
-      "source": "file:src/Infrastructure/Infrastructure.csproj",
+      "source": "file:src/Web/Web.csproj",
       "target": "file:../Application/Application.csproj",
       "metadata": {
         "dependencyType": "project-reference"
@@ -696,8 +696,8 @@
     {
       "id": "edge-64",
       "type": "DEPENDS_ON",
-      "source": "file:src/Infrastructure/Infrastructure.csproj",
-      "target": "file:../Domain/Domain.csproj",
+      "source": "file:src/Web/Web.csproj",
+      "target": "file:../Infrastructure/Infrastructure.csproj",
       "metadata": {
         "dependencyType": "project-reference"
       }
