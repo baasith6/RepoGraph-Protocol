@@ -12,6 +12,14 @@ export const CONFIG_FILES = [
   "ai.yml",
 ] as const;
 
+export const OPTIONAL_CONFIG_FILES = [
+  "ownership.yml",
+  "risk.yml",
+  "glossary.yml",
+  "api.yml",
+  "database.yml",
+] as const;
+
 export type ConfigFileName = (typeof CONFIG_FILES)[number];
 
 export interface RepographConfig {
@@ -21,13 +29,18 @@ export interface RepographConfig {
   rules?: Record<string, unknown>;
   tests?: Record<string, unknown>;
   ai?: Record<string, unknown>;
+  ownership?: Record<string, unknown>;
+  risk?: Record<string, unknown>;
+  glossary?: Record<string, unknown>;
+  api?: Record<string, unknown>;
+  database?: Record<string, unknown>;
 }
 
 export async function loadRepographConfig(root: string): Promise<RepographConfig> {
   const repographDir = getRepographDir(root);
   const config: RepographConfig = {};
 
-  for (const file of CONFIG_FILES) {
+  for (const file of [...CONFIG_FILES, ...OPTIONAL_CONFIG_FILES]) {
     const key = file.replace(".yml", "") as keyof RepographConfig;
     const filePath = path.join(repographDir, file);
     try {

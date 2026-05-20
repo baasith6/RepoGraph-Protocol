@@ -18,6 +18,11 @@ export function resolveSchemaDir(): string {
     path.join(__dirname, "schemas"),
     path.join(__dirname, "..", "schemas"),
     path.join(path.dirname(process.argv[1] ?? ""), "schemas"),
+    // Monorepo/dev environments (vitest, local imports)
+    path.join(process.cwd(), "packages", "protocol", "src", "schemas"),
+    path.join(process.cwd(), "packages", "protocol", "dist", "schemas"),
+    // Installed package layout
+    path.join(process.cwd(), "node_modules", "@repograph", "protocol", "dist", "schemas"),
   ];
 
   for (const dir of candidates) {

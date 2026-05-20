@@ -14,6 +14,9 @@ export function exportContextPack(graph: RepoGraph, config: RepographConfig): st
     exclude_paths?: string[];
     risk_warnings?: string[];
   } | undefined;
+  const ownership = config.ownership as { owners?: Record<string, { modules?: string[] }> } | undefined;
+  const risk = config.risk as { risks?: Array<{ path: string; risk: string; reason?: string }> } | undefined;
+  const glossary = config.glossary as { glossary?: Array<{ term: string; definition: string; module?: string }> } | undefined;
   const arch = config.architecture?.architecture as { style?: string } | undefined;
   const layers = config.architecture?.layers as Record<string, { path: string; allowed_dependencies?: string[] }> | undefined;
 
@@ -70,6 +73,35 @@ export function exportContextPack(graph: RepoGraph, config: RepographConfig): st
     for (const warn of ai.risk_warnings) {
       lines.push(`- ${warn}`);
     }
+    lines.push("");
+  }
+
+  if (ownership?.owners && Object.keys(ownership.owners).length > 0) {
+    lines.push("## Ownership", "");
+    for (const [owner, def] of Object.entries(ownership.owners)) {
+      const mods = def.modules?.length ? def.modules.join(", ") : "—";
+      lines.push(`- **${owner}**: ${mods}`);
+    }
+    lines.push("");
+  }
+
+  if (risk?.risks?.length) {
+    lines.push("## Risk (computed)", "");
+    for (const r of risk.risks.slice(0, 30)) {
+      const reason = r.reason ? ` — ${r.reason}` : "";
+      lines.push(`- **[${r.risk}]** \`${r.path}\`${reason}`);
+    }
+    if (risk.risks.length > 30) lines.push(`- ...and ${risk.risks.length - 30} more`);
+    lines.push("");
+  }
+
+  if (glossary?.glossary?.length) {
+    lines.push("## Glossary", "");
+    for (const g of glossary.glossary.slice(0, 30)) {
+      const mod = g.module ? ` (${g.module})` : "";
+      lines.push(`- **${g.term}**${mod}: ${g.definition}`);
+    }
+    if (glossary.glossary.length > 30) lines.push(`- ...and ${glossary.glossary.length - 30} more`);
     lines.push("");
   }
 
