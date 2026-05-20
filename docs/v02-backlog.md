@@ -1,66 +1,62 @@
 # RepoGraph Backlog
 
-Status as of v0.2.1. See [v0.3 roadmap](#v03-deferred) for next work.
+Status as of **v0.3.0**. Phase A (ownership, risk, glossary sync) is **shipped**.
 
-## Completed in v0.2.x
+## Completed in v0.2.x – v0.3.0
 
 ### Analyzers
 
-- [x] **Roslyn-based C# analyzer** (`tools/repograph-roslyn`, `@repograph/analyzer-csharp-roslyn`)
-  - Symbol index, project references, API endpoints (when .NET SDK + MSBuild available)
-  - Falls back to heuristic analyzer for npm global install / CI without MSBuild
+- [x] Roslyn-based C# analyzer (`tools/repograph-roslyn`)
+- [x] TypeScript compiler API analyzer (`packages/analyzers/typescript`)
+- [x] Protocol sync: `api.yml`, `database.yml` from scan
 
-- [x] **TypeScript compiler API analyzer** (v0.3 — `packages/analyzers/typescript`)
-  - tsconfig-aware import resolution when `tsconfig.json` is present
+### Protocol & governance (Phase A)
 
-### Protocol Extensions
-
-- [x] `api.yml`, `database.yml`, `risk.yml`, `ownership.yml`, `glossary.yml` — stubs in `repograph init`
-- [x] `api.yml` / `database.yml` — auto-populated from scan when endpoints/entities are detected (v0.3)
+- [x] `ownership.yml` — CODEOWNERS import/export via `repograph sync`
+- [x] `risk.yml` — signals-based scoring with manual override preservation
+- [x] `glossary.yml` — term suggestions from identifiers and docs
 
 ### CLI
 
-- [x] `repograph diff` — compare graph between git refs
-- [x] npm publish `@repographprotocol/cli` with bundled distribution
+- [x] `repograph diff` — compare graphs between git refs
+- [x] Incremental scan cache (`scan-cache.json`)
+- [x] Graph drift in `repograph validate` (`scanSignature` + `--strict`)
 
 ### Integrations
 
-- [x] **GitHub Composite Action** (`action/action.yml`)
-- [x] **MCP server** (`apps/mcp-server`) — graph, explain, impact, violations tools (v0.3)
-- [x] **VS Code extension** (`apps/vscode`) — module tree + violations panel (read-only, v0.3)
+- [x] GitHub Composite Action
+- [x] MCP server (`apps/mcp-server`)
+- [x] VS Code extension (`apps/vscode`, read-only)
 
-## v0.3 deferred
+### Repo / docs
+
+- [x] README, 3 examples, GitHub Releases workflow, demo GIF
+
+## v0.3.x deferred
 
 ### Analyzers
 
 - [ ] EF configuration / migration parsing for `database.yml`
 - [ ] Angular route and DI graph (full compiler integration)
 
-### Protocol Extensions
-
-- [ ] `ownership.yml` — CODEOWNERS import/export
-- [ ] `risk.yml` — automated path-based risk scoring
-- [ ] `glossary.yml` — term extraction from code/comments
-
-### CLI
-
-- [ ] `repograph validate` — validate generated graph against live code drift
-
 ### Integrations
 
 - [ ] Azure DevOps pipeline task
 - [ ] GitLab CI template
 - [ ] GitHub Marketplace listing for the action
+- [ ] Publish VS Code extension to Marketplace
 
 ### Infrastructure
 
-- [ ] SQLite cache for incremental scans
+- [ ] SQLite-backed cache (optional upgrade from JSON cache)
 - [ ] Plugin system for custom analyzers and exporters
 - [ ] Dashboard (`apps/dashboard`) for graph visualization
 
-## Priority Order (v0.3+)
+## Priority order (v0.3.1+)
 
-1. CODEOWNERS → `ownership.yml` sync
-2. Incremental scan cache
-3. Plugin system
+1. EF → `database.yml` enrichment
+2. Angular analyzer depth
+3. VS Code extension publish + Marketplace action
 4. Azure DevOps / GitLab templates
+5. Plugin system
+6. Dashboard

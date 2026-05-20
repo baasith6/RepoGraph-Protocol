@@ -13,7 +13,7 @@ Three reference repositories show how RepoGraph maps different stacks to modules
 From the example directory (after installing the CLI globally):
 
 ```bash
-npm install -g @repographprotocol/cli@0.2.1
+npm install -g @repographprotocol/cli@0.3.0
 repograph validate
 repograph scan
 repograph sync

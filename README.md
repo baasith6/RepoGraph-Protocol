@@ -10,11 +10,11 @@
 RepoGraph turns a repository into a structured **knowledge graph** — modules, layers, dependencies, APIs, risks, ownership, and architecture rules — so developers, CI, and AI tools work from **trusted context**, not guesses.
 
 <p align="center">
-  <img src="docs/assets/demo-flow.svg" alt="RepoGraph workflow: init, scan, check, export" width="900"/>
+  <img src="docs/assets/demo.gif" alt="RepoGraph workflow: init, scan, check, export" width="900"/>
 </p>
 
 <p align="center">
-  <em>Static preview. Record a GIF with <a href="docs/assets/RECORD_DEMO.md">docs/assets/RECORD_DEMO.md</a>.</em>
+  <em>Animated preview. Record a terminal demo with <a href="docs/assets/RECORD_DEMO.md">docs/assets/RECORD_DEMO.md</a>.</em>
 </p>
 
 ---
@@ -24,17 +24,17 @@ RepoGraph turns a repository into a structured **knowledge graph** — modules, 
 **Requires Node.js 20+**
 
 ```bash
-npm install -g @repographprotocol/cli@0.2.1
+npm install -g @repographprotocol/cli@0.3.0
 repograph --version
 ```
 
 One-off (no global install):
 
 ```bash
-npx @repographprotocol/cli@0.2.1 --help
+npx @repographprotocol/cli@0.3.0 --help
 ```
 
-> Use **0.2.1 or later**. `@repographprotocol/cli@0.2.0` has a known runtime issue on global install.
+> Use **0.3.0 or later**. `@repographprotocol/cli@0.2.0` has a known runtime issue on global install; prefer **0.2.1+**.
 
 ---
 
@@ -97,7 +97,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: baasith6/RepoGraph-Protocol/action@v0.2.1
+      - uses: baasith6/RepoGraph-Protocol/action@v0.3.0
         with:
           fail-on: error
           comment-pr: true
@@ -176,6 +176,7 @@ We publish [GitHub Releases](https://github.com/baasith6/RepoGraph-Protocol/rele
 
 | Version | Notes |
 |---------|--------|
+| [v0.3.0](docs/releases/v0.3.0.md) | Scan cache, graph drift validate, demo GIF |
 | [v1.0.0](docs/releases/v1.0.0.md) | First public release (recommended starting point) |
 | [v0.2.1](docs/releases/v0.2.1.md) | npm CLI runtime fix |
 | [v0.2.0](docs/releases/v0.2.0.md) | diff, Roslyn, protocol 0.2 |

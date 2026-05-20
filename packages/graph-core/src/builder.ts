@@ -37,7 +37,11 @@ export class GraphBuilder {
     return this.violations;
   }
 
-  build(project: RepoGraph["project"], unmappedFiles: number): RepoGraph {
+  build(
+    project: RepoGraph["project"],
+    unmappedFiles: number,
+    scanSignature?: string
+  ): RepoGraph {
     const nodes = this.getNodes();
     const moduleCount = nodes.filter((n) => n.type === "MODULE").length;
     const layerCount = nodes.filter((n) => n.type === "LAYER").length;
@@ -56,6 +60,7 @@ export class GraphBuilder {
         dependencyCount: this.edges.filter((e) => e.type === "DEPENDS_ON").length,
         unmappedFiles,
         violationCount: this.violations.length,
+        ...(scanSignature ? { scanSignature } : {}),
       },
     };
   }

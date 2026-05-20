@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: baasith6/RepoGraph-Protocol/action@v0.2.1
+      - uses: baasith6/RepoGraph-Protocol/action@v0.3.0
         with:
           fail-on: error
 ```

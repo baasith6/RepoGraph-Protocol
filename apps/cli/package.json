@@ -1,6 +1,6 @@
 {
   "name": "@repographprotocol/cli",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "CLI for RepoGraph Protocol — machine-readable context for human and AI developers",
   "type": "module",
   "license": "Apache-2.0",

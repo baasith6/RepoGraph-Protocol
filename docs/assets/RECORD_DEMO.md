@@ -1,11 +1,11 @@
 # Recording a demo GIF for the README
 
-The README uses [`demo-flow.svg`](demo-flow.svg) as a static preview. For promotion, replace it with a short GIF (15–30 seconds).
+The README uses [`demo.gif`](demo.gif) (generated from [`demo-flow.svg`](demo-flow.svg)). Replace it with a short terminal recording (15–30 seconds) for a stronger landing page.
 
 ## Suggested flow to record
 
 ```bash
-npm install -g @repographprotocol/cli@0.2.1
+npm install -g @repographprotocol/cli@0.3.0
 cd examples/clean-architecture-csharp-angular
 repograph scan
 repograph check
@@ -21,4 +21,4 @@ repograph export --format cursor
 ## After recording
 
 1. Save as `docs/assets/demo.gif` (keep under ~5 MB if possible).
-2. Update root `README.md` demo section to reference the GIF instead of (or in addition to) the SVG.
+2. Replace `docs/assets/demo.gif` and commit (README already points at the GIF).

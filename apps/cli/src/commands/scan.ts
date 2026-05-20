@@ -4,7 +4,11 @@ import { exportJson } from "@repograph/exporter-json";
 import { exportMermaid } from "@repograph/exporter-mermaid";
 import { exportContextPack } from "@repograph/exporter-markdown";
 import { checkArchitectureRules, getEnforcementMode } from "@repograph/rule-engine";
-import { buildGraphFromScan, scanRepository } from "@repograph/scanner-core";
+import {
+  buildGraphFromScan,
+  computeScanSignature,
+  scanRepository,
+} from "@repograph/scanner-core";
 import { getGeneratedDir, log, syncProtocolFromScan } from "@repograph/shared";
 import { loadConfig, getRoot } from "../context.js";
 
@@ -13,10 +17,19 @@ export async function scanRepositoryAndWrite(): Promise<void> {
   const config = await loadConfig();
 
   log("info", "Scanning repository...");
-  const scan = await scanRepository(root, config);
+  const generatedDir = getGeneratedDir(root);
+  const scan = await scanRepository(root, config, {
+    generatedDir,
+    useCache: true,
+  });
+  if (scan.cacheHits !== undefined && scan.cacheHits > 0) {
+    log("info", `Scan cache: ${scan.cacheHits} unchanged file(s) reused`);
+  }
 
   const builder = buildGraphFromScan(root, config, scan);
   const projectConfig = config.project?.project as Record<string, string> | undefined;
+
+  const scanSignature = await computeScanSignature(root);
 
   let graph = builder.build(
     {
@@ -25,7 +38,8 @@ export async function scanRepositoryAndWrite(): Promise<void> {
       architecture: projectConfig?.architecture,
       primaryLanguage: projectConfig?.primary_language,
     },
-    scan.unmappedFiles.length
+    scan.unmappedFiles.length,
+    scanSignature
   );
 
   const ruleResult = checkArchitectureRules(graph, config, getEnforcementMode(config));
@@ -33,9 +47,7 @@ export async function scanRepositoryAndWrite(): Promise<void> {
     builder.addViolation(violation);
   }
 
-  graph = builder.build(graph.project, scan.unmappedFiles.length);
-
-  const generatedDir = getGeneratedDir(root);
+  graph = builder.build(graph.project, scan.unmappedFiles.length, scanSignature);
   await fs.mkdir(generatedDir, { recursive: true });
 
   await fs.writeFile(path.join(generatedDir, "graph.json"), exportJson(graph), "utf-8");

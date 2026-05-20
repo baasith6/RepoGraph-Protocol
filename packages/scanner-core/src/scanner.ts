@@ -1,19 +1,16 @@
+import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { glob } from "glob";
-import ignoreModule from "ignore";
-
-type IgnoreInstance = {
-  add: (pattern: string | string[]) => IgnoreInstance;
-  ignores: (path: string) => boolean;
-};
-
-function createIgnore(): IgnoreInstance {
-  const factory = ignoreModule as unknown as () => IgnoreInstance;
-  const withDefault = ignoreModule as unknown as { default: () => IgnoreInstance };
-  return typeof factory === "function" ? factory() : withDefault.default();
-}
 import { minimatch } from "minimatch";
+import { loadIgnore } from "./ignore.js";
+import {
+  createEmptyCache,
+  fileContentHash,
+  hashConfig,
+  loadScanCache,
+  saveScanCache,
+} from "./scan-cache.js";
 import { GraphBuilder } from "@repograph/graph-core";
 import type { RepographConfig } from "@repograph/shared";
 import { normalizePath } from "@repograph/shared";
@@ -69,27 +66,9 @@ function resolveLayer(filePath: string, layers: LayerDef[]): string | undefined 
   return undefined;
 }
 
-async function loadIgnore(root: string): Promise<IgnoreInstance> {
-  const ig = createIgnore();
-  ig.add(["node_modules", "dist", "bin", "obj", ".git", ".repograph/generated"]);
-
-  const gitignorePath = path.join(root, ".gitignore");
-  try {
-    const content = await fs.readFile(gitignorePath, "utf-8");
-    ig.add(content);
-  } catch {
-    // no .gitignore
-  }
-
-  const repographIgnorePath = path.join(root, ".repographignore");
-  try {
-    const content = await fs.readFile(repographIgnorePath, "utf-8");
-    ig.add(content);
-  } catch {
-    // no .repographignore
-  }
-
-  return ig;
+export interface ScanOptions {
+  generatedDir?: string;
+  useCache?: boolean;
 }
 
 function parseModules(config: RepographConfig): ModuleDef[] {
@@ -108,11 +87,19 @@ function parseLayers(config: RepographConfig): LayerDef[] {
 
 export async function scanRepository(
   root: string,
-  config: RepographConfig
-): Promise<ScanResult> {
+  config: RepographConfig,
+  options: ScanOptions = {}
+): Promise<ScanResult & { cacheHits?: number }> {
   const ig = await loadIgnore(root);
   const modules = parseModules(config);
   const layers = parseLayers(config);
+  const configHash = hashConfig(config);
+  const useCache = options.useCache !== false && Boolean(options.generatedDir);
+  const priorCache =
+    useCache && options.generatedDir
+      ? await loadScanCache(options.generatedDir, configHash)
+      : null;
+  const nextCache = priorCache ?? createEmptyCache(configHash);
 
   const allFiles = await glob("**/*", {
     cwd: root,
@@ -128,6 +115,8 @@ export async function scanRepository(
   let symbols: ScanResult["symbols"] = [];
   let apiEndpoints: ScanResult["apiEndpoints"] = [];
   let analyzer: ScanResult["analyzer"] = "heuristic";
+  let cacheHits = 0;
+  const csharpPaths: string[] = [];
 
   const detectedStack = {
     csharp: false,
@@ -147,6 +136,7 @@ export async function scanRepository(
     if (ext === ".csproj" || ext === ".sln") {
       detectedStack.dotnet = true;
       detectedStack.csharp = true;
+      csharpPaths.push(normalized);
     }
     if (normalized.includes("angular.json")) {
       detectedStack.angular = true;
@@ -164,69 +154,154 @@ export async function scanRepository(
       unmappedFiles.push(normalized);
     }
 
-    files.push({
+    if (language === "typescript" || language === "javascript") {
+      tsSourcePaths.push(normalized);
+    }
+    if (language === "csharp") {
+      csharpPaths.push(normalized);
+    }
+
+    const hash = await fileContentHash(root, normalized);
+    const cached = priorCache?.files[normalized];
+    if (cached && cached.hash === hash) {
+      files.push(cached.file);
+      dependencies.push(...cached.dependencies);
+      cacheHits++;
+      nextCache.files[normalized] = cached;
+      continue;
+    }
+
+    const scanned: ScannedFile = {
       path: normalized,
       language,
       module,
       layer,
       extension: ext,
-    });
+    };
+    files.push(scanned);
 
-    if (language === "typescript" || language === "javascript") {
-      tsSourcePaths.push(normalized);
-    }
-
+    const fileDeps: FileDependency[] = [];
     const fullPath = path.join(root, normalized);
     try {
       const content = await fs.readFile(fullPath, "utf-8");
       if (language === "csharp") {
-        dependencies.push(...analyzeCSharpFile(normalized, content));
+        fileDeps.push(...analyzeCSharpFile(normalized, content));
+        dependencies.push(...fileDeps);
       }
     } catch {
       // skip unreadable files
     }
+
+    nextCache.files[normalized] = { hash, file: scanned, dependencies: fileDeps };
   }
 
-  const tsProjectDeps = analyzeTypeScriptProject(root, tsSourcePaths);
-  if (tsProjectDeps && tsProjectDeps.length > 0) {
-    dependencies.push(...tsProjectDeps);
-    if (analyzer === "heuristic") {
-      analyzer = "heuristic";
-    }
+  const tsProjectHash = crypto
+    .createHash("sha256")
+    .update(
+      (
+        await Promise.all(tsSourcePaths.map((p) => fileContentHash(root, p)))
+      ).join("|")
+    )
+    .digest("hex")
+    .slice(0, 16);
+
+  if (
+    priorCache &&
+    priorCache.typescriptHash === tsProjectHash &&
+    priorCache.typescriptDeps.length > 0
+  ) {
+    dependencies.push(...priorCache.typescriptDeps);
+    nextCache.typescriptDeps = priorCache.typescriptDeps;
+    nextCache.typescriptHash = tsProjectHash;
   } else {
-    for (const normalized of tsSourcePaths) {
-      try {
-        const content = await fs.readFile(path.join(root, normalized), "utf-8");
-        dependencies.push(...analyzeTypeScriptFile(normalized, content));
-      } catch {
-        // skip
+    const tsProjectDeps = analyzeTypeScriptProject(root, tsSourcePaths);
+    if (tsProjectDeps && tsProjectDeps.length > 0) {
+      dependencies.push(...tsProjectDeps);
+      nextCache.typescriptDeps = tsProjectDeps;
+    } else {
+      const perFileTsDeps: FileDependency[] = [];
+      for (const normalized of tsSourcePaths) {
+        try {
+          const content = await fs.readFile(path.join(root, normalized), "utf-8");
+          perFileTsDeps.push(...analyzeTypeScriptFile(normalized, content));
+        } catch {
+          // skip
+        }
       }
+      dependencies.push(...perFileTsDeps);
+      nextCache.typescriptDeps = perFileTsDeps;
     }
+    nextCache.typescriptHash = tsProjectHash;
   }
 
   const csprojFiles = await glob("**/*.csproj", { cwd: root, nodir: true });
+  const roslynHash = crypto
+    .createHash("sha256")
+    .update(
+      (
+        await Promise.all(csharpPaths.map((p) => fileContentHash(root, p)))
+      ).join("|")
+    )
+    .digest("hex")
+    .slice(0, 16);
+
   if (csprojFiles.length > 0) {
     detectedStack.dotnet = true;
     detectedStack.csharp = true;
 
-    const roslyn = await runRoslynAnalyzer(root);
-    if (roslyn && roslyn.dependencies.length > 0) {
+    if (
+      priorCache &&
+      priorCache.roslynHash === roslynHash &&
+      priorCache.roslynDeps.length > 0 &&
+      priorCache.analyzer === "roslyn"
+    ) {
       analyzer = "roslyn";
-      dependencies = roslyn.dependencies.map((d) => ({
-        source: d.source,
-        target: d.target,
-        type: d.type as FileDependency["type"],
-      }));
-      symbols = roslyn.symbols;
-      apiEndpoints = roslyn.apiEndpoints;
+      dependencies = [
+        ...dependencies.filter((d) => !d.source.endsWith(".cs")),
+        ...priorCache.roslynDeps,
+      ];
+      symbols = priorCache.roslynSymbols;
+      apiEndpoints = priorCache.roslynApiEndpoints;
+      nextCache.roslynDeps = priorCache.roslynDeps;
+      nextCache.roslynSymbols = priorCache.roslynSymbols;
+      nextCache.roslynApiEndpoints = priorCache.roslynApiEndpoints;
+      nextCache.roslynHash = roslynHash;
+      nextCache.analyzer = "roslyn";
     } else {
-      for (const csproj of csprojFiles) {
-        try {
-          const content = await fs.readFile(path.join(root, csproj), "utf-8");
-          dependencies.push(...analyzeCsproj(normalizePath(csproj), content));
-        } catch {
-          // skip
+      const roslyn = await runRoslynAnalyzer(root);
+      if (roslyn && roslyn.dependencies.length > 0) {
+        analyzer = "roslyn";
+        const nonRoslynDeps = dependencies.filter((d) => !d.source.endsWith(".cs"));
+        dependencies = [
+          ...nonRoslynDeps,
+          ...roslyn.dependencies.map((d) => ({
+            source: d.source,
+            target: d.target,
+            type: d.type as FileDependency["type"],
+          })),
+        ];
+        symbols = roslyn.symbols;
+        apiEndpoints = roslyn.apiEndpoints;
+        nextCache.roslynDeps = roslyn.dependencies.map((d) => ({
+          source: d.source,
+          target: d.target,
+          type: d.type as FileDependency["type"],
+        }));
+        nextCache.roslynSymbols = roslyn.symbols;
+        nextCache.roslynApiEndpoints = roslyn.apiEndpoints;
+        nextCache.roslynHash = roslynHash;
+        nextCache.analyzer = "roslyn";
+      } else {
+        for (const csproj of csprojFiles) {
+          try {
+            const content = await fs.readFile(path.join(root, csproj), "utf-8");
+            dependencies.push(...analyzeCsproj(normalizePath(csproj), content));
+          } catch {
+            // skip
+          }
         }
+        nextCache.roslynHash = roslynHash;
+        nextCache.analyzer = "heuristic";
       }
     }
   }
@@ -238,7 +313,21 @@ export async function scanRepository(
     // not angular
   }
 
-  return { files, dependencies, unmappedFiles, symbols, apiEndpoints, analyzer, detectedStack };
+  nextCache.analyzer = analyzer;
+  if (useCache && options.generatedDir) {
+    await saveScanCache(options.generatedDir, nextCache);
+  }
+
+  return {
+    files,
+    dependencies,
+    unmappedFiles,
+    symbols,
+    apiEndpoints,
+    analyzer,
+    detectedStack,
+    cacheHits: useCache ? cacheHits : undefined,
+  };
 }
 
 export function buildGraphFromScan(

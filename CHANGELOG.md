@@ -2,6 +2,19 @@
 
 All notable changes are documented here. GitHub Release notes live in [docs/releases/](docs/releases/).
 
+## [0.3.0] - 2026-05-20
+
+### Added
+
+- Incremental scan cache (`.repograph/generated/scan-cache.json`) for faster `repograph scan`
+- Graph drift detection in `repograph validate` with optional `--strict`
+- `scanSignature` in `graph.json` stats
+- README demo GIF (`docs/assets/demo.gif`)
+
+### Changed
+
+- CLI and GitHub Action version **0.3.0**
+
 ## [1.0.0] - 2026-05-20
 
 First public release — recommended for new adopters.

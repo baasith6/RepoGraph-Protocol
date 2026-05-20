@@ -20,7 +20,7 @@ export async function runCli(argv: string[]): Promise<void> {
   program
     .name("repograph")
     .description("Machine-readable context for human and AI developers")
-    .version("0.2.1");
+    .version("0.3.0");
 
   program
     .command("init")
@@ -29,7 +29,11 @@ export async function runCli(argv: string[]): Promise<void> {
     .option("-f, --force", "Overwrite existing files")
     .action(initCommand);
 
-  program.command("validate").description("Validate .repograph config files").action(validateCommand);
+  program
+    .command("validate")
+    .description("Validate .repograph config files and detect graph drift")
+    .option("--strict", "Fail when graph.json is out of date vs repository")
+    .action(validateCommand);
 
   program.command("doctor").description("Check RepoGraph setup health").action(doctorCommand);
 

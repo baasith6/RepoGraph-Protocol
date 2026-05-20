@@ -70,5 +70,6 @@ export interface RepoGraph {
     dependencyCount: number;
     unmappedFiles: number;
     violationCount: number;
+    scanSignature?: string;
   };
 }
