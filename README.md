@@ -24,17 +24,17 @@ RepoGraph turns a repository into a structured **knowledge graph** — modules, 
 **Requires Node.js 20+**
 
 ```bash
-npm install -g @repographprotocol/cli@0.3.0
+npm install -g @repographprotocol/cli@0.5.0
 repograph --version
 ```
 
 One-off (no global install):
 
 ```bash
-npx @repographprotocol/cli@0.3.0 --help
+npx @repographprotocol/cli@0.5.0 --help
 ```
 
-> Use **0.3.0 or later**. `@repographprotocol/cli@0.2.0` has a known runtime issue on global install; prefer **0.2.1+**.
+> Use **0.5.0 or later**. Requires [.NET SDK](https://dotnet.microsoft.com/download) for full C# / EF analysis (Roslyn ships inside the CLI bundle). `@repographprotocol/cli@0.2.0` has a known runtime issue on global install; prefer **0.2.1+**.
 
 ---
 
@@ -97,7 +97,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: baasith6/RepoGraph-Protocol/action@v0.3.0
+      - uses: baasith6/RepoGraph-Protocol/action@v0.5.0
         with:
           fail-on: error
           comment-pr: true
@@ -120,9 +120,9 @@ jobs:
 | `repograph list` | List modules, layers, or violations |
 | `repograph visualize` | Mermaid dependency diagrams |
 | `repograph stats` | Repository metrics |
-| `repograph export` | json, markdown, mermaid, cursor |
-| `repograph prompt` | AI-ready task context |
-| `repograph impact` | Blast radius for a file change |
+| `repograph export` | json, markdown, mermaid, cursor, claude, copilot |
+| `repograph prompt` | Task-aware AI context (`--mode short\|full\|strict`) |
+| `repograph impact` | Blast radius for a file change (`--json`) |
 
 ---
 
@@ -146,8 +146,10 @@ jobs:
     graph.json
     graph.mmd
     context-pack.md
+    context-pack.short.md
 ```
 
+- AI context guide: [docs/ai-context.md](docs/ai-context.md)
 - Spec v0.1: [docs/spec/0.1.0.md](docs/spec/0.1.0.md)
 - Spec v0.2: [docs/spec/0.2.0.md](docs/spec/0.2.0.md)
 
@@ -157,16 +159,16 @@ jobs:
 
 ### MCP (Cursor, Claude, etc.)
 
-```bash
-pnpm build
-REPOGRAPH_ROOT=/path/to/your/repo node apps/mcp-server/dist/index.js
-```
-
-Tools: `repograph_get_graph`, `repograph_explain`, `repograph_list_violations`, `repograph_impact`, `repograph_scan`.
+See [docs/integrations/mcp.md](docs/integrations/mcp.md). Tools: `repograph_get_graph`, `repograph_explain`, `repograph_list_violations`, `repograph_impact`, `repograph_prompt`, `repograph_scan`.
 
 ### VS Code
 
-Open `apps/vscode` and press **F5** — Explorer views for modules and violations when `.repograph/project.yml` exists.
+See [docs/integrations/vscode.md](docs/integrations/vscode.md) — Explorer views and **Copy Task Prompt**.
+
+### Other CI
+
+- Azure DevOps: [docs/ci/azure-pipelines-repograph.yml](docs/ci/azure-pipelines-repograph.yml)
+- GitLab: [docs/ci/gitlab-repograph.yml](docs/ci/gitlab-repograph.yml)
 
 ---
 
@@ -176,6 +178,8 @@ We publish [GitHub Releases](https://github.com/baasith6/RepoGraph-Protocol/rele
 
 | Version | Notes |
 |---------|--------|
+| [v0.5.0](docs/releases/v0.5.0.md) | EF database.yml, Angular routes, Roslyn in npm CLI |
+| [v0.4.0](docs/releases/v0.4.0.md) | Task-aware prompt/impact, Claude/Copilot export |
 | [v0.3.0](docs/releases/v0.3.0.md) | Scan cache, graph drift validate, demo GIF |
 | [v1.0.0](docs/releases/v1.0.0.md) | First public release (recommended starting point) |
 | [v0.2.1](docs/releases/v0.2.1.md) | npm CLI runtime fix |

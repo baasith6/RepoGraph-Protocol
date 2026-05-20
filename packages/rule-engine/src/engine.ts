@@ -1,3 +1,4 @@
+import { analyzeImpactRich, type ContextMode } from "@repograph/context-engine";
 import type { GraphNode, RepoGraph, Violation } from "@repograph/graph-core";
 import type { RepographConfig } from "@repograph/shared";
 import type { EnforcementMode, RuleCheckResult } from "./types.js";
@@ -327,53 +328,14 @@ export function explainProject(graph: RepoGraph, config: RepographConfig): strin
 export function analyzeImpact(
   graph: RepoGraph,
   config: RepographConfig,
-  filePath: string
+  filePath: string,
+  mode: ContextMode = "full"
 ): string {
-  const explanation = explainFile(graph, filePath);
-  const normalized = filePath.replace(/\\/g, "/");
-
-  const fileNode = graph.nodes.find(
-    (n) => n.type === "FILE" && (n.label === normalized || n.label.endsWith(normalized))
-  );
-
-  if (!fileNode) return explanation;
-
-  const moduleEdge = graph.edges.find(
-    (e) => e.type === "BELONGS_TO" && e.source === fileNode.id && e.target.startsWith("module:")
-  );
-  const moduleNode = moduleEdge
-    ? graph.nodes.find((n) => n.id === moduleEdge.target)
-    : undefined;
-
-  const tests = (config.tests?.tests ?? []) as Array<{ module: string; paths: string[] }>;
-  const relatedTests = moduleNode
-    ? tests.filter((t) => t.module === moduleNode.label)
-  : [];
-
-  let output = explanation + "\n--- Impact Analysis ---\n\n";
-
-  if (moduleNode) {
-    output += `Affected module: ${moduleNode.label}\n`;
-
-    const siblingFiles = graph.edges
-      .filter((e) => e.type === "BELONGS_TO" && e.target === moduleNode.id)
-      .length;
-    output += `Files in same module: ${siblingFiles}\n`;
+  const report = analyzeImpactRich(graph, config, filePath, mode);
+  if (!report.fileFound) {
+    return explainFile(graph, filePath) + "\n\n" + report.summary;
   }
-
-  if (relatedTests.length > 0) {
-    output += "\nRelated tests:\n";
-    for (const test of relatedTests) {
-      for (const p of test.paths) {
-        output += `  - ${p}\n`;
-      }
-    }
-  }
-
-  const moduleMeta = moduleNode?.metadata;
-  if (moduleMeta?.critical) {
-    output += "\nRisk: HIGH (critical module)\n";
-  }
-
-  return output;
+  return explainFile(graph, filePath) + "\n\n" + report.summary;
 }
+
+export { analyzeImpactRich, formatImpactReport } from "@repograph/context-engine";

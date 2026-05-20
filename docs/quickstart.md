@@ -34,7 +34,7 @@ repograph explain
 repograph stats
 ```
 
-- `scan` writes `.repograph/generated/graph.json`, `graph.mmd`, and `context-pack.md`
+- `scan` writes `.repograph/generated/graph.json`, `graph.mmd`, `context-pack.md`, and `context-pack.short.md`
 - `check` fails (exit code 1) when architecture rules are violated
 
 ## Export for AI tools
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: baasith6/RepoGraph-Protocol/action@v0.3.0
+      - uses: baasith6/RepoGraph-Protocol/action@v0.5.0
         with:
           fail-on: error
 ```

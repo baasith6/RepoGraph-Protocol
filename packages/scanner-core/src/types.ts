@@ -26,12 +26,31 @@ export interface ScannedApiEndpoint {
   route: string;
 }
 
+export interface ScannedDatabaseEntity {
+  name: string;
+  file: string;
+  table: string;
+  module?: string;
+  dbContext?: string;
+  tenantScoped?: boolean;
+  requiredFields?: string[];
+  migrationFiles?: string[];
+}
+
+export interface ScannedAngularRoute {
+  file: string;
+  path: string;
+  component?: string;
+}
+
 export interface ScanResult {
   files: ScannedFile[];
   dependencies: FileDependency[];
   unmappedFiles: string[];
   symbols: ScannedSymbol[];
   apiEndpoints: ScannedApiEndpoint[];
+  databaseEntities: ScannedDatabaseEntity[];
+  angularRoutes: ScannedAngularRoute[];
   analyzer: "roslyn" | "heuristic";
   detectedStack: {
     csharp: boolean;

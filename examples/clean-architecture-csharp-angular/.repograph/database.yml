@@ -1,3 +1,13 @@
 database:
-  provider: efcore
-  entities: []
+  provider: ef-core
+  entities:
+    - name: Booking
+      module: Unmapped
+      table: Bookings
+      migration_files:
+        - src/Infrastructure/Persistence/Migrations/20240101000000_Initial.cs
+    - name: User
+      module: Unmapped
+      table: Users
+      migration_files:
+        - src/Infrastructure/Persistence/Migrations/20240101000000_Initial.cs

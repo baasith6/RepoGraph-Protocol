@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { exportJson } from "@repograph/exporter-json";
 import { exportMermaid } from "@repograph/exporter-mermaid";
-import { exportContextPack } from "@repograph/exporter-markdown";
+import { exportContextPack, exportShortContextPack } from "@repograph/exporter-markdown";
 import { checkArchitectureRules, getEnforcementMode } from "@repograph/rule-engine";
 import {
   buildGraphFromScan,
@@ -55,6 +55,11 @@ export async function scanRepositoryAndWrite(): Promise<void> {
   await fs.writeFile(
     path.join(generatedDir, "context-pack.md"),
     exportContextPack(graph, config),
+    "utf-8"
+  );
+  await fs.writeFile(
+    path.join(generatedDir, "context-pack.short.md"),
+    exportShortContextPack(graph, config),
     "utf-8"
   );
 

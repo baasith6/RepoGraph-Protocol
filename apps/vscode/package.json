@@ -2,9 +2,15 @@
   "name": "repograph-vscode",
   "displayName": "RepoGraph Protocol",
   "description": "Read-only module tree and architecture violations from .repograph/generated/graph.json",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "private": true,
   "publisher": "repographprotocol",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baasith6/RepoGraph-Protocol.git",
+    "directory": "apps/vscode"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -34,12 +40,22 @@
       {
         "command": "repograph.openGraph",
         "title": "RepoGraph: Open graph.json"
+      },
+      {
+        "command": "repograph.copyTaskPrompt",
+        "title": "RepoGraph: Copy Task Prompt"
       }
     ]
   },
   "scripts": {
     "build": "tsc",
     "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repograph/context-engine": "workspace:*",
+    "@repograph/exporter-markdown": "workspace:*",
+    "@repograph/graph-core": "workspace:*",
+    "@repograph/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

@@ -16,6 +16,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@repograph/context-engine": "workspace:*",
     "@repograph/graph-core": "workspace:*",
     "@repograph/shared": "workspace:*"
   },

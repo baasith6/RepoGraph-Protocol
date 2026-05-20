@@ -15,7 +15,17 @@
             "properties": {
               "name": { "type": "string" },
               "module": { "type": "string" },
-              "table": { "type": "string" }
+              "table": { "type": "string" },
+              "db_context": { "type": "string" },
+              "tenant_scoped": { "type": "boolean" },
+              "required_fields": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "migration_files": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
             }
           }
         }

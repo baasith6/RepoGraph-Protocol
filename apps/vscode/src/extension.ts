@@ -1,6 +1,9 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
+import { exportPrompt } from "@repograph/exporter-markdown";
+import type { RepoGraph } from "@repograph/graph-core";
+import { loadRepographConfig } from "@repograph/shared";
 
 interface GraphNode {
   id: string;
@@ -15,7 +18,7 @@ interface Violation {
   ruleId?: string;
 }
 
-interface RepoGraph {
+interface LocalGraph {
   nodes: GraphNode[];
   violations: Violation[];
   stats?: Record<string, number>;
@@ -26,13 +29,13 @@ function findWorkspaceRoot(): string | undefined {
   return folder?.uri.fsPath;
 }
 
-function loadGraph(root: string): RepoGraph | null {
+function loadGraph(root: string): LocalGraph | null {
   const graphPath = path.join(root, ".repograph", "generated", "graph.json");
   if (!fs.existsSync(graphPath)) {
     return null;
   }
   try {
-    return JSON.parse(fs.readFileSync(graphPath, "utf-8")) as RepoGraph;
+    return JSON.parse(fs.readFileSync(graphPath, "utf-8")) as LocalGraph;
   } catch {
     return null;
   }
@@ -155,6 +158,28 @@ export function activate(context: vscode.ExtensionContext): void {
         void vscode.window.showTextDocument(vscode.Uri.file(graphPath));
       } else {
         void vscode.window.showWarningMessage("graph.json not found. Run repograph scan.");
+      }
+    }),
+    vscode.commands.registerCommand("repograph.copyTaskPrompt", async () => {
+      const root = findWorkspaceRoot();
+      if (!root) return;
+      const graph = loadGraph(root);
+      if (!graph) {
+        void vscode.window.showWarningMessage("graph.json not found. Run repograph scan.");
+        return;
+      }
+      const task = await vscode.window.showInputBox({
+        prompt: "Describe the task for AI context",
+        placeHolder: "e.g. Add booking cancellation with refund",
+      });
+      if (!task) return;
+      try {
+        const config = await loadRepographConfig(root);
+        const markdown = exportPrompt(graph as unknown as RepoGraph, config, task, "full");
+        await vscode.env.clipboard.writeText(markdown);
+        void vscode.window.showInformationMessage("RepoGraph task prompt copied to clipboard.");
+      } catch (err) {
+        void vscode.window.showErrorMessage(`RepoGraph prompt failed: ${(err as Error).message}`);
       }
     })
   );

@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "configHash": "c30d82b1686c3720",
+  "files": {
+    "src/services/order.service.ts": {
+      "hash": "df66588f3c243812",
+      "file": {
+        "path": "src/services/order.service.ts",
+        "language": "typescript",
+        "module": "Orders",
+        "layer": "Services",
+        "extension": ".ts"
+      },
+      "dependencies": []
+    },
+    "src/domain/order.ts": {
+      "hash": "04c2c22440070b4c",
+      "file": {
+        "path": "src/domain/order.ts",
+        "language": "typescript",
+        "module": "Orders",
+        "layer": "Domain",
+        "extension": ".ts"
+      },
+      "dependencies": []
+    },
+    "src/api/orders.controller.ts": {
+      "hash": "c1ce45fa06f814c3",
+      "file": {
+        "path": "src/api/orders.controller.ts",
+        "language": "typescript",
+        "module": "Orders",
+        "layer": "Api",
+        "extension": ".ts"
+      },
+      "dependencies": []
+    }
+  },
+  "typescriptDeps": [
+    {
+      "source": "src/services/order.service.ts",
+      "target": "src/domain/order.js",
+      "type": "import"
+    },
+    {
+      "source": "src/api/orders.controller.ts",
+      "target": "src/services/order.service.js",
+      "type": "import"
+    }
+  ],
+  "typescriptHash": "6f48deacf9bdedc8",
+  "roslynDeps": [],
+  "roslynSymbols": [],
+  "roslynApiEndpoints": [],
+  "roslynHash": "",
+  "analyzer": "heuristic"
+}

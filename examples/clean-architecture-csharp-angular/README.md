@@ -5,7 +5,7 @@ Example repository for RepoGraph Protocol demonstrating Clean Architecture with 
 ## Usage
 
 ```bash
-npm install -g @repographprotocol/cli@0.3.0
+npm install -g @repographprotocol/cli@0.5.0
 cd examples/clean-architecture-csharp-angular
 repograph scan
 repograph check

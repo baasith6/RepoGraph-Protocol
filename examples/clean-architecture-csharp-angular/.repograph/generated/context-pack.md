@@ -1,6 +1,6 @@
 # RepoGraph Context Pack
 
-Generated: 2026-05-20T07:52:02.645Z
+Generated: 2026-05-20T12:42:58.710Z
 
 ## Project
 
@@ -44,12 +44,17 @@ Shared utilities and samples
 
 - Auth module is critical - extra care required
 
+## Risk (computed)
+
+- **[critical]** `src/**/Auth/**` — Authentication flows
+- **[high]** `src/Web/Violation/**` — Demonstrates architecture violation patterns
+
 ## Stats
 
-- Files scanned: 15
+- Files scanned: 16
 - Modules: 3
-- Dependencies: 37
-- Unmapped files: 3
+- Dependencies: 40
+- Unmapped files: 4
 
 ## Layer Diagram
 

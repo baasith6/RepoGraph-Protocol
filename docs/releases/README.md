@@ -35,6 +35,8 @@ Pushing a tag `v*` triggers [.github/workflows/release.yml](../../.github/workfl
 
 | Tag | Summary |
 |-----|---------|
+| [v0.5.0](v0.5.0.md) | EF database.yml, Angular routes, Roslyn in npm CLI |
+| [v0.4.0](v0.4.0.md) | Task-aware AI context, Claude/Copilot export |
 | [v0.3.0](v0.3.0.md) | Scan cache, graph drift validate, demo GIF |
 | [v1.0.0](v1.0.0.md) | First public release — docs, examples, Phase A sync |
 | [v0.2.1](v0.2.1.md) | Fix npm global CLI crash |

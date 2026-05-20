@@ -1,6 +1,6 @@
 {
   "name": "@repographprotocol/cli",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "CLI for RepoGraph Protocol — machine-readable context for human and AI developers",
   "type": "module",
   "license": "Apache-2.0",
@@ -44,17 +44,6 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@repograph/shared": "workspace:*",
-    "@repograph/protocol": "workspace:*",
-    "@repograph/graph-core": "workspace:*",
-    "@repograph/scanner-core": "workspace:*",
-    "@repograph/rule-engine": "workspace:*",
-    "@repograph/templates": "workspace:*",
-    "@repograph/exporter-json": "workspace:*",
-    "@repograph/exporter-mermaid": "workspace:*",
-    "@repograph/exporter-markdown": "workspace:*",
-    "@repograph/exporter-cursor": "workspace:*",
-    "@repograph/analyzer-csharp-roslyn": "workspace:*",
     "commander": "^12.1.0"
   }
 }

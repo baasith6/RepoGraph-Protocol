@@ -13,6 +13,17 @@ export interface ProtocolSyncScan {
   }>;
   symbols: Array<{ file: string; name: string; kind: string; namespace: string }>;
   files: Array<{ path: string; module?: string }>;
+  databaseEntities?: Array<{
+    name: string;
+    file: string;
+    table: string;
+    module?: string;
+    dbContext?: string;
+    tenantScoped?: boolean;
+    requiredFields?: string[];
+    migrationFiles?: string[];
+  }>;
+  angularRoutes?: Array<{ file: string; path: string; component?: string }>;
   detectedStack: { csharp: boolean; angular: boolean; dotnet: boolean; node: boolean };
 }
 
@@ -32,6 +43,10 @@ interface DatabaseEntity {
   name: string;
   module: string;
   table?: string;
+  db_context?: string;
+  tenant_scoped?: boolean;
+  required_fields?: string[];
+  migration_files?: string[];
 }
 
 function resolveModuleForFile(
@@ -67,6 +82,18 @@ function buildApiYaml(scan: ProtocolSyncScan, modules: Array<{ name: string; pat
       path: api.route,
       handler: api.controller,
       description: `Detected in ${api.file}`,
+    });
+    byModule.set(mod, list);
+  }
+
+  for (const route of scan.angularRoutes ?? []) {
+    const mod = resolveModuleForFile(route.file, modules) ?? "Frontend";
+    const list = byModule.get(mod) ?? [];
+    list.push({
+      method: "GET",
+      path: route.path,
+      handler: route.component,
+      description: `Angular route in ${route.file}`,
     });
     byModule.set(mod, list);
   }
@@ -117,11 +144,30 @@ function inferEntitiesFromSymbols(
   return entities;
 }
 
+function mergeRoslynEntities(
+  scan: ProtocolSyncScan,
+  modules: Array<{ name: string; paths: string[] }>
+): DatabaseEntity[] {
+  const fromRoslyn = scan.databaseEntities ?? [];
+  return fromRoslyn.map((e) => ({
+    name: e.name,
+    module: e.module ?? resolveModuleForFile(e.file, modules) ?? "Unmapped",
+    table: e.table,
+    db_context: e.dbContext,
+    tenant_scoped: e.tenantScoped,
+    required_fields: e.requiredFields?.length ? e.requiredFields : undefined,
+    migration_files: e.migrationFiles?.length ? e.migrationFiles : undefined,
+  }));
+}
+
 function buildDatabaseYaml(
   scan: ProtocolSyncScan,
   modules: Array<{ name: string; paths: string[] }>
 ): object {
-  const entities = inferEntitiesFromSymbols(scan, modules);
+  const roslynEntities = mergeRoslynEntities(scan, modules);
+  const entities =
+    roslynEntities.length > 0 ? roslynEntities : inferEntitiesFromSymbols(scan, modules);
+
   return {
     database: {
       provider: scan.detectedStack.dotnet ? "ef-core" : scan.detectedStack.node ? "unknown" : "unknown",
@@ -142,7 +188,8 @@ export async function syncProtocolFromScan(
   let apiUpdated = false;
   let databaseUpdated = false;
 
-  if (scan.apiEndpoints.length > 0) {
+  const hasApis = scan.apiEndpoints.length > 0 || (scan.angularRoutes?.length ?? 0) > 0;
+  if (hasApis) {
     const apiDoc = buildApiYaml(scan, modules);
     await fs.writeFile(
       path.join(repographDir, "api.yml"),

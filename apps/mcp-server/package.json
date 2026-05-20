@@ -1,13 +1,21 @@
 {
   "name": "@repograph/mcp-server",
-  "version": "0.3.0",
-  "private": true,
+  "version": "0.5.0",
   "description": "MCP server exposing RepoGraph graph, explain, impact, and violations",
   "type": "module",
   "bin": {
     "repograph-mcp": "./dist/index.js"
   },
   "main": "./dist/index.js",
+  "files": ["dist"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baasith6/RepoGraph-Protocol.git",
+    "directory": "apps/mcp-server"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
@@ -15,6 +23,8 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
+    "@repograph/context-engine": "workspace:*",
+    "@repograph/exporter-markdown": "workspace:*",
     "@repograph/graph-core": "workspace:*",
     "@repograph/rule-engine": "workspace:*",
     "@repograph/scanner-core": "workspace:*",

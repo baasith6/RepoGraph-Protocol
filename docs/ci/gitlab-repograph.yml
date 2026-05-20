@@ -1,0 +1,21 @@
+# RepoGraph job for GitLab CI
+# Include in .gitlab-ci.yml:
+#   include:
+#     - local: docs/ci/gitlab-repograph.yml
+
+repograph:
+  image: node:22-bookworm
+  stage: test
+  script:
+    - npm install -g @repographprotocol/cli@0.5.0
+    - repograph validate
+    - repograph scan
+    - repograph check
+  artifacts:
+    when: always
+    paths:
+      - .repograph/generated/
+    expire_in: 7 days
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

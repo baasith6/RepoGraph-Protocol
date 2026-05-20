@@ -16,7 +16,9 @@ import type { RepographConfig } from "@repograph/shared";
 import { normalizePath } from "@repograph/shared";
 import { analyzeCSharpFile, analyzeCsproj } from "@repograph/analyzer-csharp";
 import { runRoslynAnalyzer } from "@repograph/analyzer-csharp-roslyn";
+import { analyzeAngularProject } from "@repograph/analyzer-angular";
 import { analyzeTypeScriptFile, analyzeTypeScriptProject } from "@repograph/analyzer-typescript";
+import { scanEfMigrations } from "./migration-scanner.js";
 import type { FileDependency, ScanResult, ScannedFile } from "./types.js";
 
 const CODE_EXTENSIONS: Record<string, string> = {
@@ -114,6 +116,8 @@ export async function scanRepository(
   const unmappedFiles: string[] = [];
   let symbols: ScanResult["symbols"] = [];
   let apiEndpoints: ScanResult["apiEndpoints"] = [];
+  let databaseEntities: ScanResult["databaseEntities"] = [];
+  let angularRoutes: ScanResult["angularRoutes"] = [];
   let analyzer: ScanResult["analyzer"] = "heuristic";
   let cacheHits = 0;
   const csharpPaths: string[] = [];
@@ -269,7 +273,7 @@ export async function scanRepository(
       nextCache.analyzer = "roslyn";
     } else {
       const roslyn = await runRoslynAnalyzer(root);
-      if (roslyn && roslyn.dependencies.length > 0) {
+      if (roslyn && (roslyn.dependencies.length > 0 || roslyn.databaseEntities.length > 0)) {
         analyzer = "roslyn";
         const nonRoslynDeps = dependencies.filter((d) => !d.source.endsWith(".cs"));
         dependencies = [
@@ -282,6 +286,16 @@ export async function scanRepository(
         ];
         symbols = roslyn.symbols;
         apiEndpoints = roslyn.apiEndpoints;
+        databaseEntities = roslyn.databaseEntities.map((e) => ({
+          name: e.name,
+          file: e.file,
+          table: e.table,
+          dbContext: e.dbContext,
+          tenantScoped: e.tenantScoped,
+          requiredFields: e.requiredFields,
+          migrationFiles: e.migrationFiles,
+          module: resolveModule(e.file, modules),
+        }));
         nextCache.roslynDeps = roslyn.dependencies.map((d) => ({
           source: d.source,
           target: d.target,
@@ -310,7 +324,43 @@ export async function scanRepository(
     await fs.access(path.join(root, "angular.json"));
     detectedStack.angular = true;
   } catch {
-    // not angular
+    try {
+      await fs.access(path.join(root, "client", "angular.json"));
+      detectedStack.angular = true;
+    } catch {
+      // not angular
+    }
+  }
+
+  if (detectedStack.csharp || detectedStack.dotnet) {
+    const migrationEntities = await scanEfMigrations(root, (fp) => resolveModule(fp, modules));
+    if (migrationEntities.length > 0) {
+      const byName = new Map(databaseEntities.map((e) => [e.name.toLowerCase(), e]));
+      for (const m of migrationEntities) {
+        const existing = byName.get(m.name.toLowerCase());
+        if (existing) {
+          existing.table = existing.table || m.table;
+          existing.migrationFiles = [
+            ...new Set([...(existing.migrationFiles ?? []), ...(m.migrationFiles ?? [])]),
+          ];
+        } else {
+          databaseEntities.push(m);
+          byName.set(m.name.toLowerCase(), m);
+        }
+      }
+    }
+  }
+
+  if (detectedStack.angular) {
+    const routes = await analyzeAngularProject(root);
+    angularRoutes = routes;
+    for (const route of routes) {
+      dependencies.push({
+        source: route.file,
+        target: `angular:route:${route.path}`,
+        type: "import",
+      });
+    }
   }
 
   nextCache.analyzer = analyzer;
@@ -324,6 +374,8 @@ export async function scanRepository(
     unmappedFiles,
     symbols,
     apiEndpoints,
+    databaseEntities,
+    angularRoutes,
     analyzer,
     detectedStack,
     cacheHits: useCache ? cacheHits : undefined,

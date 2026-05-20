@@ -24,4 +24,27 @@ describe("protocol sync", () => {
     };
     expect(groupApis(scan)).toEqual(["Auth"]);
   });
+
+  it("prefers roslyn database entities over heuristics", () => {
+    const scan: ProtocolSyncScan = {
+      apiEndpoints: [],
+      symbols: [{ file: "src/Domain/Foo.cs", name: "FooEntity", kind: "CLASS", namespace: "X" }],
+      files: [],
+      databaseEntities: [
+        {
+          name: "Booking",
+          file: "src/Domain/Booking/Booking.cs",
+          table: "Bookings",
+          module: "Booking",
+          dbContext: "AppDbContext",
+          tenantScoped: false,
+          requiredFields: ["Id"],
+          migrationFiles: ["src/Infrastructure/Migrations/001.cs"],
+        },
+      ],
+      detectedStack: { csharp: true, angular: false, dotnet: true, node: false },
+    };
+    expect(scan.databaseEntities?.[0]?.table).toBe("Bookings");
+    expect(scan.databaseEntities?.[0]?.dbContext).toBe("AppDbContext");
+  });
 });

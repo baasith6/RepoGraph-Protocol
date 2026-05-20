@@ -20,7 +20,7 @@ export async function runCli(argv: string[]): Promise<void> {
   program
     .name("repograph")
     .description("Machine-readable context for human and AI developers")
-    .version("0.3.0");
+    .version("0.5.0");
 
   program
     .command("init")
@@ -71,19 +71,23 @@ export async function runCli(argv: string[]): Promise<void> {
   program
     .command("export")
     .description("Export graph/context to different formats")
-    .requiredOption("--format <format>", "Format: json, markdown, mermaid, cursor")
+    .requiredOption("--format <format>", "Format: json, markdown, mermaid, cursor, claude, copilot")
     .option("-o, --output <path>", "Output file path")
+    .option("--task <task>", "Task description for claude/copilot exports")
     .action(exportCommand);
 
   program
     .command("prompt <task>")
     .description("Generate AI-ready task context")
     .option("-o, --output <path>", "Output file path")
+    .option("--mode <mode>", "Context size: short, full, strict", "full")
     .action(promptCommand);
 
   program
     .command("impact <file>")
     .description("Show impact of changing a file")
+    .option("--json", "Output impact report as JSON")
+    .option("--mode <mode>", "Context size: short, full, strict", "full")
     .action(impactCommand);
 
   program

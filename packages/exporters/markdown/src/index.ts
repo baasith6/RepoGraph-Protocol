@@ -1,3 +1,9 @@
+import {
+  buildGeneralContext,
+  buildTaskContext,
+  formatTaskContextMarkdown,
+  type ContextMode,
+} from "@repograph/context-engine";
 import type { RepoGraph } from "@repograph/graph-core";
 import type { RepographConfig } from "@repograph/shared";
 import { exportMermaid } from "@repograph/exporter-mermaid";
@@ -123,43 +129,14 @@ export function exportContextPack(graph: RepoGraph, config: RepographConfig): st
 export function exportPrompt(
   graph: RepoGraph,
   config: RepographConfig,
-  task: string
+  task: string,
+  mode: ContextMode = "full"
 ): string {
-  const context = exportContextPack(graph, config);
-  const modules = (config.modules?.modules ?? []) as Array<{ name: string }>;
+  const ctx = buildTaskContext(task, graph, config, { mode });
+  return formatTaskContextMarkdown(ctx);
+}
 
-  const lines: string[] = [
-    "# Task Context",
-    "",
-    `## Task`,
-    task,
-    "",
-    "## Relevant Context",
-    "",
-    context,
-    "",
-    "## Suggested Approach",
-    "",
-    "1. Identify the affected module(s) from the task description",
-    "2. Review architecture layer rules before making changes",
-    "3. Update related tests listed in tests.yml",
-    "",
-    "## Available Modules",
-    ...modules.map((m) => `- ${m.name}`),
-    "",
-    "## Architecture Rules",
-    "",
-  ];
-
-  const archRules = (config.architecture?.rules ?? []) as Array<{ id: string; description: string }>;
-  for (const rule of archRules) {
-    lines.push(`- **${rule.id}:** ${rule.description}`);
-  }
-
-  const customRules = (config.rules?.rules ?? []) as Array<{ id: string; description: string }>;
-  for (const rule of customRules) {
-    lines.push(`- **${rule.id}:** ${rule.description}`);
-  }
-
-  return lines.join("\n");
+export function exportShortContextPack(graph: RepoGraph, config: RepographConfig): string {
+  const ctx = buildGeneralContext(graph, config, "short");
+  return formatTaskContextMarkdown(ctx);
 }

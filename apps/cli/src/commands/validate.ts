@@ -28,6 +28,15 @@ export async function validateCommand(options: ValidateOptions = {}): Promise<vo
   log("info", "All configuration files are valid.");
 
   const drift = await checkGraphDrift(root);
+
+  if (drift.unavailable) {
+    log(options.strict ? "error" : "warn", drift.message ?? "graph.json is not available.");
+    if (options.strict) {
+      process.exit(1);
+    }
+    return;
+  }
+
   if (drift.drifted) {
     log("warn", drift.message ?? "Graph is out of date.");
     if (options.strict) {

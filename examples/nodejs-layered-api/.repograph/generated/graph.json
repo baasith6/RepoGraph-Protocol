@@ -1,0 +1,184 @@
+{
+  "version": "0.1.0",
+  "generatedAt": "2026-05-20T11:43:40.770Z",
+  "project": {
+    "name": "NodeLayeredApi",
+    "root": "F:\\tic\\Repograph\\examples\\nodejs-layered-api",
+    "architecture": "Layered",
+    "primaryLanguage": "TypeScript"
+  },
+  "nodes": [
+    {
+      "id": "project:root",
+      "type": "PROJECT",
+      "label": "NodeLayeredApi",
+      "metadata": {
+        "architecture": "Layered",
+        "primaryLanguage": "TypeScript"
+      }
+    },
+    {
+      "id": "module:Orders",
+      "type": "MODULE",
+      "label": "Orders",
+      "metadata": {
+        "critical": true
+      }
+    },
+    {
+      "id": "module:Shared",
+      "type": "MODULE",
+      "label": "Shared",
+      "metadata": {
+        "critical": false
+      }
+    },
+    {
+      "id": "layer:Api",
+      "type": "LAYER",
+      "label": "Api",
+      "metadata": {
+        "path": "src/api"
+      }
+    },
+    {
+      "id": "layer:Services",
+      "type": "LAYER",
+      "label": "Services",
+      "metadata": {
+        "path": "src/services"
+      }
+    },
+    {
+      "id": "layer:Domain",
+      "type": "LAYER",
+      "label": "Domain",
+      "metadata": {
+        "path": "src/domain"
+      }
+    },
+    {
+      "id": "file:src/services/order.service.ts",
+      "type": "FILE",
+      "label": "src/services/order.service.ts",
+      "metadata": {
+        "language": "typescript",
+        "extension": ".ts"
+      }
+    },
+    {
+      "id": "file:src/domain/order.ts",
+      "type": "FILE",
+      "label": "src/domain/order.ts",
+      "metadata": {
+        "language": "typescript",
+        "extension": ".ts"
+      }
+    },
+    {
+      "id": "file:src/api/orders.controller.ts",
+      "type": "FILE",
+      "label": "src/api/orders.controller.ts",
+      "metadata": {
+        "language": "typescript",
+        "extension": ".ts"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "type": "BELONGS_TO",
+      "source": "module:Orders",
+      "target": "project:root"
+    },
+    {
+      "id": "edge-2",
+      "type": "BELONGS_TO",
+      "source": "module:Shared",
+      "target": "project:root"
+    },
+    {
+      "id": "edge-3",
+      "type": "BELONGS_TO",
+      "source": "layer:Api",
+      "target": "project:root"
+    },
+    {
+      "id": "edge-4",
+      "type": "BELONGS_TO",
+      "source": "layer:Services",
+      "target": "project:root"
+    },
+    {
+      "id": "edge-5",
+      "type": "BELONGS_TO",
+      "source": "layer:Domain",
+      "target": "project:root"
+    },
+    {
+      "id": "edge-6",
+      "type": "BELONGS_TO",
+      "source": "file:src/services/order.service.ts",
+      "target": "module:Orders"
+    },
+    {
+      "id": "edge-7",
+      "type": "BELONGS_TO",
+      "source": "file:src/services/order.service.ts",
+      "target": "layer:Services"
+    },
+    {
+      "id": "edge-8",
+      "type": "BELONGS_TO",
+      "source": "file:src/domain/order.ts",
+      "target": "module:Orders"
+    },
+    {
+      "id": "edge-9",
+      "type": "BELONGS_TO",
+      "source": "file:src/domain/order.ts",
+      "target": "layer:Domain"
+    },
+    {
+      "id": "edge-10",
+      "type": "BELONGS_TO",
+      "source": "file:src/api/orders.controller.ts",
+      "target": "module:Orders"
+    },
+    {
+      "id": "edge-11",
+      "type": "BELONGS_TO",
+      "source": "file:src/api/orders.controller.ts",
+      "target": "layer:Api"
+    },
+    {
+      "id": "edge-12",
+      "type": "DEPENDS_ON",
+      "source": "file:src/services/order.service.ts",
+      "target": "file:src/domain/order.js",
+      "metadata": {
+        "dependencyType": "import"
+      }
+    },
+    {
+      "id": "edge-13",
+      "type": "DEPENDS_ON",
+      "source": "file:src/api/orders.controller.ts",
+      "target": "file:src/services/order.service.js",
+      "metadata": {
+        "dependencyType": "import"
+      }
+    }
+  ],
+  "violations": [],
+  "stats": {
+    "fileCount": 3,
+    "moduleCount": 2,
+    "layerCount": 3,
+    "dependencyCount": 2,
+    "unmappedFiles": 0,
+    "violationCount": 0,
+    "scanSignature": "213258cff1021dd18dc1bbaac739dbef2f84f7c07274c89e915a5cbdf9c1dd89"
+  }
+}

@@ -37,19 +37,40 @@ export interface RoslynApiEndpoint {
   route: string;
 }
 
+export interface RoslynDatabaseEntity {
+  name: string;
+  file: string;
+  table: string;
+  dbContext: string;
+  tenantScoped: boolean;
+  requiredFields: string[];
+  migrationFiles: string[];
+}
+
 export interface RoslynAnalysisResult {
   projects: string[];
   dependencies: RoslynFileDependency[];
   symbols: RoslynSymbol[];
   apiEndpoints: RoslynApiEndpoint[];
+  databaseEntities: RoslynDatabaseEntity[];
   errors: string[];
 }
 
 function findRoslynProject(): string | null {
+  const envPath = process.env.REPOGRAPH_ROSLYN_PROJECT;
+  if (envPath && fs.existsSync(envPath)) return envPath;
+
   const candidates = [
+    path.join(__dirname, "roslyn-tool/Repograph.Roslyn.csproj"),
+    path.join(__dirname, "../roslyn-tool/Repograph.Roslyn.csproj"),
     path.join(__dirname, "../../../../tools/repograph-roslyn/Repograph.Roslyn.csproj"),
     path.join(process.cwd(), "tools/repograph-roslyn/Repograph.Roslyn.csproj"),
   ];
+
+  if (process.argv[1]) {
+    const cliDir = path.dirname(process.argv[1]);
+    candidates.unshift(path.join(cliDir, "roslyn-tool/Repograph.Roslyn.csproj"));
+  }
 
   for (const p of candidates) {
     if (fs.existsSync(p)) return p;
@@ -94,6 +115,15 @@ export async function runRoslynAnalyzer(root: string): Promise<RoslynAnalysisRes
           Dependencies?: Array<{ Source: string; Target: string; Type: string }>;
           Symbols?: Array<{ File: string; Name: string; Kind: string; Namespace: string }>;
           ApiEndpoints?: Array<{ File: string; Controller: string; Method: string; Route: string }>;
+          DatabaseEntities?: Array<{
+            Name: string;
+            File: string;
+            Table: string;
+            DbContext: string;
+            TenantScoped: boolean;
+            RequiredFields?: string[];
+            MigrationFiles?: string[];
+          }>;
           Errors?: string[];
         };
 
@@ -115,6 +145,15 @@ export async function runRoslynAnalyzer(root: string): Promise<RoslynAnalysisRes
             controller: a.Controller,
             method: a.Method,
             route: a.Route,
+          })),
+          databaseEntities: (raw.DatabaseEntities ?? []).map((e) => ({
+            name: e.Name,
+            file: e.File,
+            table: e.Table,
+            dbContext: e.DbContext,
+            tenantScoped: e.TenantScoped,
+            requiredFields: e.RequiredFields ?? [],
+            migrationFiles: e.MigrationFiles ?? [],
           })),
           errors: raw.Errors ?? [],
         });

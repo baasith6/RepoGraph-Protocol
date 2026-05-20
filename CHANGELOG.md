@@ -2,6 +2,38 @@
 
 All notable changes are documented here. GitHub Release notes live in [docs/releases/](docs/releases/).
 
+## [0.5.0] - 2026-05-20
+
+### Added
+
+- Roslyn EF Core / migration scanner → rich `database.yml`
+- Bundled `roslyn-tool` in npm CLI package for global installs
+- `@repograph/analyzer-angular` for Angular route detection
+- Azure DevOps and GitLab CI templates (`docs/ci/`)
+- MCP and VS Code integration guides (`docs/integrations/`)
+
+### Changed
+
+- `@repograph/mcp-server` publishable on npm (version 0.5.0)
+- CLI version **0.5.0**
+
+## [0.4.0] - 2026-05-20
+
+### Added
+
+- Task-aware AI context engine (`@repograph/context-engine`)
+- `repograph prompt --mode short|full|strict` — focused modules, files, rules, risks
+- `repograph impact --json` — reverse dependents, APIs, reviewers, AI file list
+- `repograph export --format claude|copilot`
+- `context-pack.short.md` on scan
+- MCP tool `repograph_prompt`
+- VS Code command **RepoGraph: Copy Task Prompt**
+
+### Changed
+
+- `repograph prompt` no longer embeds the full context pack for every task
+- CLI version **0.4.0**
+
 ## [0.3.0] - 2026-05-20
 
 ### Added

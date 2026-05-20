@@ -35,6 +35,15 @@ importers:
       '@repograph/analyzer-csharp-roslyn':
         specifier: workspace:*
         version: link:../../packages/analyzers/csharp-roslyn
+      '@repograph/context-engine':
+        specifier: workspace:*
+        version: link:../../packages/context-engine
+      '@repograph/exporter-claude':
+        specifier: workspace:*
+        version: link:../../packages/exporters/claude
+      '@repograph/exporter-copilot':
+        specifier: workspace:*
+        version: link:../../packages/exporters/copilot
       '@repograph/exporter-cursor':
         specifier: workspace:*
         version: link:../../packages/exporters/cursor
@@ -74,6 +83,12 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.12.0
         version: 1.29.0(zod@3.25.76)
+      '@repograph/context-engine':
+        specifier: workspace:*
+        version: link:../../packages/context-engine
+      '@repograph/exporter-markdown':
+        specifier: workspace:*
+        version: link:../../packages/exporters/markdown
       '@repograph/graph-core':
         specifier: workspace:*
         version: link:../../packages/graph-core
@@ -98,6 +113,19 @@ importers:
         version: 5.9.3
 
   apps/vscode:
+    dependencies:
+      '@repograph/context-engine':
+        specifier: workspace:*
+        version: link:../../packages/context-engine
+      '@repograph/exporter-markdown':
+        specifier: workspace:*
+        version: link:../../packages/exporters/markdown
+      '@repograph/graph-core':
+        specifier: workspace:*
+        version: link:../../packages/graph-core
+      '@repograph/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
@@ -108,6 +136,19 @@ importers:
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
+
+  packages/analyzers/angular:
+    dependencies:
+      glob:
+        specifier: ^11.0.0
+        version: 11.1.0
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+    devDependencies:
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.19)
 
   packages/analyzers/csharp:
     devDependencies:
@@ -134,6 +175,57 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@22.19.19)
 
+  packages/context-engine:
+    dependencies:
+      '@repograph/graph-core':
+        specifier: workspace:*
+        version: link:../graph-core
+      '@repograph/shared':
+        specifier: workspace:*
+        version: link:../shared
+      minimatch:
+        specifier: ^10.0.0
+        version: 10.2.5
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/exporters/claude:
+    dependencies:
+      '@repograph/context-engine':
+        specifier: workspace:*
+        version: link:../../context-engine
+      '@repograph/graph-core':
+        specifier: workspace:*
+        version: link:../../graph-core
+      '@repograph/shared':
+        specifier: workspace:*
+        version: link:../../shared
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/exporters/copilot:
+    dependencies:
+      '@repograph/context-engine':
+        specifier: workspace:*
+        version: link:../../context-engine
+      '@repograph/graph-core':
+        specifier: workspace:*
+        version: link:../../graph-core
+      '@repograph/shared':
+        specifier: workspace:*
+        version: link:../../shared
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
   packages/exporters/cursor:
     dependencies:
       '@repograph/graph-core':
@@ -159,6 +251,9 @@ importers:
 
   packages/exporters/markdown:
     dependencies:
+      '@repograph/context-engine':
+        specifier: workspace:*
+        version: link:../../context-engine
       '@repograph/exporter-mermaid':
         specifier: workspace:*
         version: link:../mermaid
@@ -220,6 +315,9 @@ importers:
 
   packages/rule-engine:
     dependencies:
+      '@repograph/context-engine':
+        specifier: workspace:*
+        version: link:../context-engine
       '@repograph/graph-core':
         specifier: workspace:*
         version: link:../graph-core
@@ -236,6 +334,9 @@ importers:
 
   packages/scanner-core:
     dependencies:
+      '@repograph/analyzer-angular':
+        specifier: workspace:*
+        version: link:../analyzers/angular
       '@repograph/analyzer-csharp':
         specifier: workspace:*
         version: link:../analyzers/csharp

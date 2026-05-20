@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild";
-import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -31,5 +31,17 @@ writeFileSync(
 cpSync(join(root, "packages/protocol/src/schemas"), join(outDir, "schemas"), {
   recursive: true,
 });
+
+const roslynSrc = join(root, "tools/repograph-roslyn");
+const roslynDest = join(outDir, "roslyn-tool");
+if (existsSync(roslynSrc)) {
+  cpSync(roslynSrc, roslynDest, {
+    recursive: true,
+    filter: (src) => {
+      const base = basename(src);
+      return base !== "bin" && base !== "obj";
+    },
+  });
+}
 
 console.log("CLI bundle written to apps/cli/dist/");

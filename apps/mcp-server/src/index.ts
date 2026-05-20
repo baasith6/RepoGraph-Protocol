@@ -5,8 +5,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import type { RepoGraph } from "@repograph/graph-core";
+import { analyzeImpactRich, formatImpactReportJson } from "@repograph/context-engine";
+import { exportPrompt } from "@repograph/exporter-markdown";
 import {
-  analyzeImpact,
   checkArchitectureRules,
   explainFile,
   explainModule,
@@ -61,7 +62,7 @@ async function loadOrBuildGraph(): Promise<{
 
 const server = new McpServer({
   name: "repograph",
-  version: "0.3.0",
+  version: "0.5.0",
 });
 
 server.tool(
@@ -137,11 +138,29 @@ server.tool(
   "Analyze blast radius of changing a file",
   {
     file: z.string().describe("Repository-relative file path"),
+    mode: z.enum(["short", "full", "strict"]).optional().default("full"),
+    json: z.boolean().optional().default(false),
   },
-  async ({ file }) => {
+  async ({ file, mode, json }) => {
     const { graph, root } = await loadOrBuildGraph();
     const config = await loadRepographConfig(root);
-    const text = analyzeImpact(graph, config, file);
+    const report = analyzeImpactRich(graph, config, file, mode);
+    const text = json ? formatImpactReportJson(report) : report.summary;
+    return { content: [{ type: "text", text }] };
+  }
+);
+
+server.tool(
+  "repograph_prompt",
+  "Generate task-aware AI context for a development task",
+  {
+    task: z.string().describe("Task description, e.g. Add booking cancellation"),
+    mode: z.enum(["short", "full", "strict"]).optional().default("full"),
+  },
+  async ({ task, mode }) => {
+    const { graph, root } = await loadOrBuildGraph();
+    const config = await loadRepographConfig(root);
+    const text = exportPrompt(graph, config, task, mode);
     return { content: [{ type: "text", text }] };
   }
 );

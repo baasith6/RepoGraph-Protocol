@@ -1,0 +1,63 @@
+{
+  "name": "@repographprotocol/cli",
+  "version": "0.5.0",
+  "description": "CLI for RepoGraph Protocol — machine-readable context for human and AI developers",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "RepoGraph Contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baasith6/RepoGraph-Protocol.git",
+    "directory": "apps/cli"
+  },
+  "homepage": "https://github.com/baasith6/RepoGraph-Protocol#readme",
+  "bugs": {
+    "url": "https://github.com/baasith6/RepoGraph-Protocol/issues"
+  },
+  "keywords": [
+    "repograph",
+    "architecture",
+    "codebase",
+    "ai-tools",
+    "clean-architecture",
+    "static-analysis",
+    "cursor",
+    "devtools"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "repograph": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:bundle": "node ../../scripts/bundle-cli.mjs",
+    "dev": "tsc --watch",
+    "test": "echo no tests",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repograph/shared": "workspace:*",
+    "@repograph/protocol": "workspace:*",
+    "@repograph/graph-core": "workspace:*",
+    "@repograph/scanner-core": "workspace:*",
+    "@repograph/rule-engine": "workspace:*",
+    "@repograph/templates": "workspace:*",
+    "@repograph/exporter-json": "workspace:*",
+    "@repograph/exporter-mermaid": "workspace:*",
+    "@repograph/exporter-markdown": "workspace:*",
+    "@repograph/context-engine": "workspace:*",
+    "@repograph/exporter-claude": "workspace:*",
+    "@repograph/exporter-copilot": "workspace:*",
+    "@repograph/exporter-cursor": "workspace:*",
+    "@repograph/analyzer-csharp-roslyn": "workspace:*",
+    "commander": "^12.1.0"
+  }
+}

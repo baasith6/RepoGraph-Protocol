@@ -1,6 +1,18 @@
 # RepoGraph Backlog
 
-Status as of **v0.3.0**. Phase A (ownership, risk, glossary sync) is **shipped**.
+Status as of **v0.5.0**. Phase A (ownership, risk, glossary sync) is **shipped**.
+
+## Completed in v0.4.0
+
+### AI context (PRD Modules 9, 10, 20)
+
+- [x] `@repograph/context-engine` — task→module scoring, file selection, reverse `DEPENDS_ON`
+- [x] `repograph prompt --mode short|full|strict`
+- [x] `repograph impact --json` with APIs, tests, reviewers
+- [x] `repograph export --format claude|copilot`
+- [x] `context-pack.short.md` on scan
+- [x] MCP `repograph_prompt`
+- [x] VS Code **Copy Task Prompt**
 
 ## Completed in v0.2.x – v0.3.0
 
@@ -32,19 +44,28 @@ Status as of **v0.3.0**. Phase A (ownership, risk, glossary sync) is **shipped**
 
 - [x] README, 3 examples, GitHub Releases workflow, demo GIF
 
-## v0.3.x deferred
+## Completed in v0.5.0
 
 ### Analyzers
 
-- [ ] EF configuration / migration parsing for `database.yml`
-- [ ] Angular route and DI graph (full compiler integration)
+- [x] EF / DbContext / migration parsing for `database.yml` (Roslyn)
+- [x] Angular route extraction (`@repograph/analyzer-angular`)
+- [x] Roslyn tool bundled in npm CLI (`dist/roslyn-tool`)
 
 ### Integrations
 
-- [ ] Azure DevOps pipeline task
-- [ ] GitLab CI template
-- [ ] GitHub Marketplace listing for the action
-- [ ] Publish VS Code extension to Marketplace
+- [x] Azure DevOps pipeline template (`docs/ci/azure-pipelines-repograph.yml`)
+- [x] GitLab CI template (`docs/ci/gitlab-repograph.yml`)
+- [x] MCP integration docs; `@repograph/mcp-server` npm-ready
+- [x] VS Code Marketplace metadata + integration docs
+
+## v0.5.x deferred
+
+### Integrations
+
+- [ ] GitHub Marketplace listing for the action (manual submit)
+- [ ] Publish VS Code extension to Marketplace (`vsce publish`)
+- [ ] Publish `@repograph/mcp-server` to npm (requires `NPM_TOKEN`)
 
 ### Infrastructure
 

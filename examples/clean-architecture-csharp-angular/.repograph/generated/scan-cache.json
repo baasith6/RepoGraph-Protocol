@@ -1,0 +1,367 @@
+{
+  "version": 1,
+  "configHash": "3ab48733bd97f3a1",
+  "files": {
+    "tests/Booking/BookingTests.cs": {
+      "hash": "9afa5206d289035f",
+      "file": {
+        "path": "tests/Booking/BookingTests.cs",
+        "language": "csharp",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "tests/Booking/BookingTests.cs",
+          "target": "namespace:CarRentalExample.Tests.Booking",
+          "type": "import"
+        }
+      ]
+    },
+    "tests/Auth/LoginTests.cs": {
+      "hash": "90f263d8bbab74ef",
+      "file": {
+        "path": "tests/Auth/LoginTests.cs",
+        "language": "csharp",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "tests/Auth/LoginTests.cs",
+          "target": "namespace:CarRentalExample.Tests.Auth",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Web/Violation/BadDependency.cs": {
+      "hash": "d9e257d530bde23a",
+      "file": {
+        "path": "src/Web/Violation/BadDependency.cs",
+        "language": "csharp",
+        "module": "Shared",
+        "layer": "Web",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Web/Violation/BadDependency.cs",
+          "target": "CarRentalExample.Infrastructure.Persistence",
+          "type": "using"
+        },
+        {
+          "source": "src/Web/Violation/BadDependency.cs",
+          "target": "namespace:CarRentalExample.Web.Violation",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Web/Booking/BookingController.cs": {
+      "hash": "cbb18fbdb6312651",
+      "file": {
+        "path": "src/Web/Booking/BookingController.cs",
+        "language": "csharp",
+        "module": "Booking",
+        "layer": "Web",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Web/Booking/BookingController.cs",
+          "target": "CarRentalExample.Application.Booking",
+          "type": "using"
+        },
+        {
+          "source": "src/Web/Booking/BookingController.cs",
+          "target": "Microsoft.AspNetCore.Mvc",
+          "type": "using"
+        },
+        {
+          "source": "src/Web/Booking/BookingController.cs",
+          "target": "namespace:CarRentalExample.Web.Booking",
+          "type": "import"
+        },
+        {
+          "source": "src/Web/Booking/BookingController.cs",
+          "target": "api:api/bookings",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Web/Auth/AuthController.cs": {
+      "hash": "cb3b948b5f966ed6",
+      "file": {
+        "path": "src/Web/Auth/AuthController.cs",
+        "language": "csharp",
+        "module": "Auth",
+        "layer": "Web",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Web/Auth/AuthController.cs",
+          "target": "CarRentalExample.Application.Auth",
+          "type": "using"
+        },
+        {
+          "source": "src/Web/Auth/AuthController.cs",
+          "target": "Microsoft.AspNetCore.Mvc",
+          "type": "using"
+        },
+        {
+          "source": "src/Web/Auth/AuthController.cs",
+          "target": "namespace:CarRentalExample.Web.Auth",
+          "type": "import"
+        },
+        {
+          "source": "src/Web/Auth/AuthController.cs",
+          "target": "api:api/auth",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Infrastructure/Persistence/AppDbContext.cs": {
+      "hash": "b77881203f280fe0",
+      "file": {
+        "path": "src/Infrastructure/Persistence/AppDbContext.cs",
+        "language": "csharp",
+        "layer": "Infrastructure",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Infrastructure/Persistence/AppDbContext.cs",
+          "target": "CarRentalExample.Domain.Auth",
+          "type": "using"
+        },
+        {
+          "source": "src/Infrastructure/Persistence/AppDbContext.cs",
+          "target": "CarRentalExample.Domain.Booking",
+          "type": "using"
+        },
+        {
+          "source": "src/Infrastructure/Persistence/AppDbContext.cs",
+          "target": "namespace:CarRentalExample.Infrastructure.Persistence",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Infrastructure/Auth/AuthRepository.cs": {
+      "hash": "b33132a19fee2609",
+      "file": {
+        "path": "src/Infrastructure/Auth/AuthRepository.cs",
+        "language": "csharp",
+        "module": "Auth",
+        "layer": "Infrastructure",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Infrastructure/Auth/AuthRepository.cs",
+          "target": "CarRentalExample.Application.Auth",
+          "type": "using"
+        },
+        {
+          "source": "src/Infrastructure/Auth/AuthRepository.cs",
+          "target": "CarRentalExample.Domain.Auth",
+          "type": "using"
+        },
+        {
+          "source": "src/Infrastructure/Auth/AuthRepository.cs",
+          "target": "namespace:CarRentalExample.Infrastructure.Auth",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Domain/Booking/Booking.cs": {
+      "hash": "a554ff51ff860814",
+      "file": {
+        "path": "src/Domain/Booking/Booking.cs",
+        "language": "csharp",
+        "module": "Booking",
+        "layer": "Domain",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Domain/Booking/Booking.cs",
+          "target": "namespace:CarRentalExample.Domain.Booking",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Domain/Auth/User.cs": {
+      "hash": "f54901183ef51593",
+      "file": {
+        "path": "src/Domain/Auth/User.cs",
+        "language": "csharp",
+        "module": "Auth",
+        "layer": "Domain",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Domain/Auth/User.cs",
+          "target": "namespace:CarRentalExample.Domain.Auth",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Application/Booking/CreateBookingCommand.cs": {
+      "hash": "b7da187058244e0b",
+      "file": {
+        "path": "src/Application/Booking/CreateBookingCommand.cs",
+        "language": "csharp",
+        "module": "Booking",
+        "layer": "Application",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Application/Booking/CreateBookingCommand.cs",
+          "target": "CarRentalExample.Domain.Booking",
+          "type": "using"
+        },
+        {
+          "source": "src/Application/Booking/CreateBookingCommand.cs",
+          "target": "namespace:CarRentalExample.Application.Booking",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Application/Auth/LoginCommand.cs": {
+      "hash": "3ede82964dc93409",
+      "file": {
+        "path": "src/Application/Auth/LoginCommand.cs",
+        "language": "csharp",
+        "module": "Auth",
+        "layer": "Application",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Application/Auth/LoginCommand.cs",
+          "target": "CarRentalExample.Domain.Auth",
+          "type": "using"
+        },
+        {
+          "source": "src/Application/Auth/LoginCommand.cs",
+          "target": "namespace:CarRentalExample.Application.Auth",
+          "type": "import"
+        }
+      ]
+    },
+    "src/Infrastructure/Persistence/Migrations/20240101000000_Initial.cs": {
+      "hash": "3becce19838a031d",
+      "file": {
+        "path": "src/Infrastructure/Persistence/Migrations/20240101000000_Initial.cs",
+        "language": "csharp",
+        "layer": "Infrastructure",
+        "extension": ".cs"
+      },
+      "dependencies": [
+        {
+          "source": "src/Infrastructure/Persistence/Migrations/20240101000000_Initial.cs",
+          "target": "namespace:CarRentalExample.Infrastructure.Persistence.Migrations",
+          "type": "import"
+        }
+      ]
+    },
+    "client/src/app/booking/booking.service.ts": {
+      "hash": "c2d4981a574e03e6",
+      "file": {
+        "path": "client/src/app/booking/booking.service.ts",
+        "language": "typescript",
+        "module": "Booking",
+        "extension": ".ts"
+      },
+      "dependencies": []
+    },
+    "client/src/app/booking/booking.component.ts": {
+      "hash": "48a9881c069fedb3",
+      "file": {
+        "path": "client/src/app/booking/booking.component.ts",
+        "language": "typescript",
+        "module": "Booking",
+        "extension": ".ts"
+      },
+      "dependencies": []
+    },
+    "client/src/app/auth/login.component.ts": {
+      "hash": "0c10090b471e3d7f",
+      "file": {
+        "path": "client/src/app/auth/login.component.ts",
+        "language": "typescript",
+        "module": "Auth",
+        "extension": ".ts"
+      },
+      "dependencies": []
+    },
+    "client/src/app/auth/auth.service.ts": {
+      "hash": "7941fb6b5298c70f",
+      "file": {
+        "path": "client/src/app/auth/auth.service.ts",
+        "language": "typescript",
+        "module": "Auth",
+        "extension": ".ts"
+      },
+      "dependencies": []
+    }
+  },
+  "typescriptDeps": [
+    {
+      "source": "client/src/app/booking/booking.service.ts",
+      "target": "@angular/core",
+      "type": "import"
+    },
+    {
+      "source": "client/src/app/booking/booking.service.ts",
+      "target": "@angular/common/http",
+      "type": "import"
+    },
+    {
+      "source": "client/src/app/booking/booking.component.ts",
+      "target": "@angular/core",
+      "type": "import"
+    },
+    {
+      "source": "client/src/app/booking/booking.component.ts",
+      "target": "./booking.service",
+      "type": "import"
+    },
+    {
+      "source": "client/src/app/booking/booking.component.ts",
+      "target": "angular:component",
+      "type": "import"
+    },
+    {
+      "source": "client/src/app/auth/login.component.ts",
+      "target": "@angular/core",
+      "type": "import"
+    },
+    {
+      "source": "client/src/app/auth/login.component.ts",
+      "target": "./auth.service",
+      "type": "import"
+    },
+    {
+      "source": "client/src/app/auth/login.component.ts",
+      "target": "angular:component",
+      "type": "import"
+    },
+    {
+      "source": "client/src/app/auth/auth.service.ts",
+      "target": "@angular/core",
+      "type": "import"
+    },
+    {
+      "source": "client/src/app/auth/auth.service.ts",
+      "target": "@angular/common/http",
+      "type": "import"
+    }
+  ],
+  "typescriptHash": "2185b2f59c9bc24c",
+  "roslynDeps": [],
+  "roslynSymbols": [],
+  "roslynApiEndpoints": [],
+  "roslynHash": "9070c0f683888383",
+  "analyzer": "heuristic"
+}
