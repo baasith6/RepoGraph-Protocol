@@ -1,0 +1,19 @@
+modules:
+  - name: Auth
+    description: Authentication and authorization
+    paths:
+      - "src/**/Auth/**"
+      - "client/src/app/auth/**"
+    critical: true
+
+  - name: Booking
+    description: Booking management
+    paths:
+      - "src/**/Booking/**"
+      - "client/src/app/booking/**"
+
+  - name: Shared
+    description: Shared utilities
+    paths:
+      - "src/Shared/**"
+      - "client/src/app/shared/**"

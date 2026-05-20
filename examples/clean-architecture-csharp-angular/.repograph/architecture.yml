@@ -1,0 +1,28 @@
+architecture:
+  style: Clean Architecture
+
+layers:
+  Domain:
+    path: "src/Domain"
+    allowed_dependencies: []
+
+  Application:
+    path: "src/Application"
+    allowed_dependencies:
+      - Domain
+
+  Infrastructure:
+    path: "src/Infrastructure"
+    allowed_dependencies:
+      - Application
+      - Domain
+
+  Web:
+    path: "src/Web"
+    allowed_dependencies:
+      - Application
+
+rules:
+  - id: no-web-to-infrastructure
+    description: Web must not directly depend on Infrastructure
+    severity: error

@@ -1,0 +1,54 @@
+---
+description: RepoGraph-generated rules for this repository
+globs:
+  - "**/*"
+---
+
+# CarRentalExample - RepoGraph Rules
+
+Architecture: Clean Architecture
+
+## Architecture Rules
+
+- **Domain** (`src/Domain`) may only depend on: 
+- **Application** (`src/Application`) may only depend on: Domain
+- **Infrastructure** (`src/Infrastructure`) may only depend on: Application, Domain
+- **Web** (`src/Web`) may only depend on: Application
+
+- Web must not directly depend on Infrastructure
+- Web layer must not reference Infrastructure layer
+
+## Modules
+
+- Auth [CRITICAL]
+- Booking
+- Shared
+
+## AI Instructions
+
+- Follow Clean Architecture layer rules strictly
+- Domain layer must not depend on any other layer
+- Web layer must not access Infrastructure directly
+- Always validate TenantId in multi-tenant operations
+
+## Risk Warnings
+
+- Auth module is critical - extra care required
+
+## Excluded Paths
+
+- `node_modules/**`
+- `bin/**`
+- `obj/**`
+
+## Known Violations (fix before merging)
+
+- [error] Layer "Web" must not depend on "Infrastructure". Allowed: [Application]
+- [error] Web layer must not reference Infrastructure layer
+- [error] Web must not directly depend on Infrastructure
+
+## Before Editing
+
+- Run `repograph scan` after structural changes
+- Run `repograph check` before committing
+- Use `repograph impact <file>` to understand change scope

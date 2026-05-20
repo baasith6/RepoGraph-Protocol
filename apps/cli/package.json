@@ -1,0 +1,31 @@
+{
+  "name": "@repograph/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "repograph": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "echo no tests",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repograph/shared": "workspace:*",
+    "@repograph/protocol": "workspace:*",
+    "@repograph/graph-core": "workspace:*",
+    "@repograph/scanner-core": "workspace:*",
+    "@repograph/rule-engine": "workspace:*",
+    "@repograph/templates": "workspace:*",
+    "@repograph/exporter-json": "workspace:*",
+    "@repograph/exporter-mermaid": "workspace:*",
+    "@repograph/exporter-markdown": "workspace:*",
+    "@repograph/exporter-cursor": "workspace:*",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

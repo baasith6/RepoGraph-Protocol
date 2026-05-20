@@ -1,0 +1,10 @@
+tests:
+  - module: Auth
+    paths:
+      - "tests/Auth/LoginTests.cs"
+    description: Authentication tests
+
+  - module: Booking
+    paths:
+      - "tests/Booking/BookingTests.cs"
+    description: Booking tests

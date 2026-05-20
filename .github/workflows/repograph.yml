@@ -1,0 +1,63 @@
+name: RepoGraph CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm test
+
+  repograph-example:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm build
+
+      - name: Run RepoGraph on example
+        working-directory: examples/clean-architecture-csharp-angular
+        run: |
+          node ../../apps/cli/dist/index.js validate
+          node ../../apps/cli/dist/index.js scan
+          node ../../apps/cli/dist/index.js stats
+
+      - name: Verify architecture violation detected
+        working-directory: examples/clean-architecture-csharp-angular
+        run: |
+          node ../../apps/cli/dist/index.js check || true
+          node ../../apps/cli/dist/index.js list violations
+
+      - name: Upload graph artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: repograph-graph
+          path: examples/clean-architecture-csharp-angular/.repograph/generated/graph.json

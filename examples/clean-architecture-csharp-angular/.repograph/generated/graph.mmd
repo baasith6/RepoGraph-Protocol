@@ -1,0 +1,18 @@
+graph TD
+  subgraph modules [Modules]
+    module_Auth["Auth"]
+    module_Booking["Booking"]
+    module_Shared["Shared"]
+  end
+  subgraph layers [Layers]
+    layer_Domain["Domain"]
+    layer_Application["Application"]
+    layer_Infrastructure["Infrastructure"]
+    layer_Web["Web"]
+  end
+  layer_Web -.->|violation| layer_Infrastructure
+  layer_Web -.->|violation| layer_Infrastructure
+  layer_Web -.->|violation| layer_Infrastructure
+  Web -.->|layer-dependency:Web->Infrastructure| Infrastructure
+  Web -.->|no-web-to-infrastructure| Infrastructure
+  Web -.->|no-web-to-infrastructure| Infrastructure

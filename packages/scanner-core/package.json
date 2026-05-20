@@ -1,0 +1,31 @@
+{
+  "name": "@repograph/scanner-core",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo no tests",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repograph/shared": "workspace:*",
+    "@repograph/graph-core": "workspace:*",
+    "@repograph/analyzer-csharp": "workspace:*",
+    "@repograph/analyzer-typescript": "workspace:*",
+    "glob": "^11.0.0",
+    "ignore": "^6.0.2",
+    "minimatch": "^10.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

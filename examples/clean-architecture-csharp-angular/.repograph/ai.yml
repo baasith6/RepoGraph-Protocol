@@ -1,0 +1,12 @@
+ai:
+  instructions:
+    - Follow Clean Architecture layer rules strictly
+    - Domain layer must not depend on any other layer
+    - Web layer must not access Infrastructure directly
+    - Always validate TenantId in multi-tenant operations
+  exclude_paths:
+    - "node_modules/**"
+    - "bin/**"
+    - "obj/**"
+  risk_warnings:
+    - Auth module is critical - extra care required

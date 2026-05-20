@@ -1,0 +1,11 @@
+rules:
+  - id: no-web-to-infrastructure
+    description: Web layer must not reference Infrastructure layer
+    severity: error
+    type: forbidden-dependency
+    from: Web
+    to: Infrastructure
+    forbidden: true
+
+enforcement:
+  mode: error

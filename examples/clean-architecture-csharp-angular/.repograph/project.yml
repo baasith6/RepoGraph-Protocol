@@ -1,0 +1,16 @@
+protocol:
+  name: RepoGraph
+  version: 0.1.0
+
+project:
+  name: CarRentalExample
+  description: Example Clean Architecture C# + Angular project
+  type: Modular Monolith
+  architecture: Clean Architecture
+  primary_language: C#
+  secondary_languages:
+    - TypeScript
+
+repository:
+  provider: GitHub
+  default_branch: main
