@@ -8,3 +8,5 @@ obj/
 coverage/
 .repograph/generated/
 *.tsbuildinfo
+.npmrc
+apps/cli/.npmrc

@@ -1,7 +1,7 @@
 # RepoGraph Protocol
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![npm](https://img.shields.io/npm/v/@repograph/cli)](https://www.npmjs.com/package/@repograph/cli)
+[![npm](https://img.shields.io/npm/v/@repographprotocol/cli)](https://www.npmjs.com/package/@repographprotocol/cli)
 
 > Machine-readable context for human and AI developers.
 
@@ -10,7 +10,7 @@ RepoGraph turns a repository into a structured knowledge graph that AI tools, de
 ## Install
 
 ```bash
-npm install -g @repograph/cli
+npm install -g @repographprotocol/cli
 ```
 
 ## Quick Start

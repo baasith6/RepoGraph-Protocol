@@ -5,13 +5,13 @@ Get RepoGraph running on a C# + Angular (or any) repository in under five minute
 ## Install
 
 ```bash
-npm install -g @repograph/cli
+npm install -g @repographprotocol/cli
 ```
 
 Or use without installing:
 
 ```bash
-npx @repograph/cli@latest --help
+npx @repographprotocol/cli@latest --help
 ```
 
 ## Initialize

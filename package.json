@@ -13,8 +13,8 @@
     "test": "vitest run",
     "lint": "turbo run lint",
     "repograph": "node apps/cli/dist/index.js",
-    "dev": "pnpm --filter @repograph/cli dev",
-    "publish:cli": "pnpm build && pnpm build:cli-bundle && pnpm --filter @repograph/cli publish --access public --no-git-checks"
+    "dev": "pnpm --filter @repographprotocol/cli dev",
+    "publish:cli": "node scripts/publish-cli.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

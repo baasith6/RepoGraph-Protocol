@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.1] - 2026-05-20
+
+### Fixed
+
+- npm-published CLI runtime crash by bundling to CommonJS output (`dist/index.cjs`) and updating `bin`.
+
 ## [0.2.0] - 2026-05-20
 
 ### Added
@@ -8,7 +14,7 @@
 - Roslyn C# analyzer (`tools/repograph-roslyn`) with fallback to heuristics
 - Protocol v0.2.0 stub files: `api.yml`, `database.yml`, `risk.yml`, `ownership.yml`, `glossary.yml`
 - GitHub Composite Action at `action/action.yml`
-- npm bundle publish pipeline for `@repograph/cli`
+- npm bundle publish pipeline for `@repographprotocol/cli`
 - [docs/quickstart.md](docs/quickstart.md) and [docs/adopting.md](docs/adopting.md)
 - [docs/spec/0.2.0.md](docs/spec/0.2.0.md)
 
@@ -21,7 +27,7 @@
 
 ### Added
 
-- npm publish support for `@repograph/cli` (bundled distribution)
+- npm publish support for `@repographprotocol/cli` (bundled distribution)
 - GitHub Composite Action at `action/action.yml`
 - Quickstart and adopting guides
 - `repograph diff` command (compare graphs between git refs)

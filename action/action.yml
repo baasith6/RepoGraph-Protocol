@@ -38,7 +38,7 @@ runs:
 
     - name: Install RepoGraph CLI
       shell: bash
-      run: npm install -g @repograph/cli@0.2.0
+      run: npm install -g @repographprotocol/cli@0.2.1
 
     - name: RepoGraph validate
       shell: bash

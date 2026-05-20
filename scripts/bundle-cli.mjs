@@ -1,5 +1,5 @@
 import * as esbuild from "esbuild";
-import { cpSync, mkdirSync, rmSync } from "node:fs";
+import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -15,11 +15,18 @@ await esbuild.build({
   bundle: true,
   platform: "node",
   target: "node20",
-  outfile: join(outDir, "index.js"),
-  format: "esm",
+  outfile: join(outDir, "index.cjs"),
+  format: "cjs",
   packages: "bundle",
   sourcemap: true,
 });
+
+// Keep the executable entrypoint as ESM with a shebang.
+// (esbuild may emit "use strict" before banners in CJS output, breaking shebang parsing.)
+writeFileSync(
+  join(outDir, "index.js"),
+  ["#!/usr/bin/env node", "import './index.cjs';", ""].join("\n")
+);
 
 cpSync(join(root, "packages/protocol/src/schemas"), join(outDir, "schemas"), {
   recursive: true,

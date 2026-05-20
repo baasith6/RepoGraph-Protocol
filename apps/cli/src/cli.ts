@@ -20,7 +20,7 @@ export async function runCli(argv: string[]): Promise<void> {
   program
     .name("repograph")
     .description("Machine-readable context for human and AI developers")
-    .version("0.2.0");
+    .version("0.2.1");
 
   program
     .command("init")

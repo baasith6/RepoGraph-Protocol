@@ -1,6 +1,6 @@
 {
-  "name": "@repograph/cli",
-  "version": "0.2.0",
+  "name": "@repographprotocol/cli",
+  "version": "0.2.1",
   "description": "CLI for RepoGraph Protocol — machine-readable context for human and AI developers",
   "type": "module",
   "license": "Apache-2.0",
@@ -39,8 +39,6 @@
   "scripts": {
     "build": "tsc",
     "build:bundle": "node ../../scripts/bundle-cli.mjs",
-    "prepublishOnly": "cd ../.. && pnpm build && node scripts/bundle-cli.mjs",
-    "prepack": "node ../../scripts/bundle-cli.mjs",
     "dev": "tsc --watch",
     "test": "echo no tests",
     "lint": "tsc --noEmit"
@@ -58,10 +56,5 @@
     "@repograph/exporter-cursor": "workspace:*",
     "@repograph/analyzer-csharp-roslyn": "workspace:*",
     "commander": "^12.1.0"
-  },
-  "devDependencies": {
-    "esbuild": "^0.24.0",
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
   }
 }

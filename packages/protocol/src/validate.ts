@@ -4,6 +4,15 @@ import { parse as parseYaml } from "yaml";
 import { resolveSchemaDir } from "./schema-path.js";
 import type { ValidationError, ValidationResult } from "./types.js";
 
+function getImportMetaUrl(): string | undefined {
+  try {
+    // Avoid syntax errors in CommonJS bundles by evaluating dynamically.
+    return new Function("return import.meta.url")() as string;
+  } catch {
+    return undefined;
+  }
+}
+
 const SCHEMA_MAP: Record<string, string> = {
   "project.yml": "project.schema.json",
   "modules.yml": "modules.schema.json",
@@ -30,7 +39,7 @@ let ajvInstance: any = null;
 async function getAjv(): Promise<any> {
   if (!ajvInstance) {
     const { createRequire } = await import("node:module");
-    const require = createRequire(import.meta.url);
+    const require = createRequire(getImportMetaUrl() ?? process.cwd());
     const Ajv = require("ajv") as new (opts?: object) => {
       addSchema: (schema: object) => void;
       getSchema: (id: string) => ((data: unknown) => boolean) | undefined;
