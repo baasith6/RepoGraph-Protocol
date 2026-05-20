@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "database.schema.json",
+  "type": "object",
+  "properties": {
+    "database": {
+      "type": "object",
+      "properties": {
+        "provider": { "type": "string" },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "module"],
+            "properties": {
+              "name": { "type": "string" },
+              "module": { "type": "string" },
+              "table": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

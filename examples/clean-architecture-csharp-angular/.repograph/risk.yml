@@ -1,0 +1,8 @@
+risks:
+  - path: "src/**/Auth/**"
+    risk: critical
+    reason: Authentication flows
+
+  - path: "src/Web/Violation/**"
+    risk: high
+    reason: Demonstrates architecture violation patterns

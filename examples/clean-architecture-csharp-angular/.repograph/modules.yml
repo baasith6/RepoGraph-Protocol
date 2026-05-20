@@ -13,7 +13,8 @@ modules:
       - "client/src/app/booking/**"
 
   - name: Shared
-    description: Shared utilities
+    description: Shared utilities and samples
     paths:
       - "src/Shared/**"
+      - "src/Web/Violation/**"
       - "client/src/app/shared/**"

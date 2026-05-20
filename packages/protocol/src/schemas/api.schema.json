@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "api.schema.json",
+  "type": "object",
+  "properties": {
+    "apis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["module", "endpoints"],
+        "properties": {
+          "module": { "type": "string" },
+          "endpoints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["method", "path"],
+              "properties": {
+                "method": { "type": "string" },
+                "path": { "type": "string" },
+                "handler": { "type": "string" },
+                "description": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

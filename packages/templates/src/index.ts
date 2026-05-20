@@ -14,13 +14,53 @@ export function getTemplate(name: TemplateName): TemplateFile[] {
   }
 }
 
+function protocolStubFiles(): TemplateFile[] {
+  return [
+    {
+      path: "api.yml",
+      content: `# Map HTTP endpoints to modules (auto-fill planned v0.3)
+apis: []
+`,
+    },
+    {
+      path: "database.yml",
+      content: `# Map database entities to modules (auto-fill planned v0.3)
+database:
+  provider: unknown
+  entities: []
+`,
+    },
+    {
+      path: "risk.yml",
+      content: `# Path-based risk rules
+risks:
+  - path: "src/**/Auth/**"
+    risk: critical
+    reason: Authentication flows
+`,
+    },
+    {
+      path: "ownership.yml",
+      content: `# Team and module ownership
+owners: {}
+`,
+    },
+    {
+      path: "glossary.yml",
+      content: `# Domain terminology
+glossary: []
+`,
+    },
+  ];
+}
+
 function defaultTemplate(): TemplateFile[] {
   return [
     {
       path: "project.yml",
       content: `protocol:
   name: RepoGraph
-  version: 0.1.0
+  version: 0.2.0
 
 project:
   name: MyProject
@@ -81,6 +121,7 @@ enforcement:
   risk_warnings: []
 `,
     },
+    ...protocolStubFiles(),
     {
       path: "decisions/ADR-001-example.md",
       content: `# ADR-001: Example Architecture Decision
@@ -107,7 +148,7 @@ function cleanArchitectureTemplate(): TemplateFile[] {
       path: "project.yml",
       content: `protocol:
   name: RepoGraph
-  version: 0.1.0
+  version: 0.2.0
 
 project:
   name: CarRentalSystem
@@ -145,6 +186,7 @@ repository:
     description: Shared utilities and cross-cutting concerns
     paths:
       - "src/Shared/**"
+      - "src/Web/Violation/**"
       - "client/src/app/shared/**"
 `,
     },
@@ -228,6 +270,7 @@ enforcement:
     - Database migrations are high risk
 `,
     },
+    ...protocolStubFiles(),
     {
       path: "decisions/ADR-001-clean-architecture.md",
       content: `# ADR-001: Clean Architecture

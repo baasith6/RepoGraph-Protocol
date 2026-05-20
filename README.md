@@ -1,22 +1,30 @@
 # RepoGraph Protocol
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![npm](https://img.shields.io/npm/v/@repograph/cli)](https://www.npmjs.com/package/@repograph/cli)
+
 > Machine-readable context for human and AI developers.
 
 RepoGraph turns a repository into a structured knowledge graph that AI tools, developers, and CI pipelines can understand.
 
+## Install
+
+```bash
+npm install -g @repograph/cli
+```
+
 ## Quick Start
 
 ```bash
-pnpm install
-pnpm build
-
-# In your project directory:
-npx repograph init
-npx repograph validate
-npx repograph scan
-npx repograph check
-npx repograph explain
+repograph init --template clean-architecture-csharp-angular
+repograph validate
+repograph scan
+repograph check
+repograph explain
+repograph export --format cursor
 ```
+
+See [docs/quickstart.md](docs/quickstart.md) for the full guide.
 
 ## CLI Commands
 
@@ -28,6 +36,7 @@ npx repograph explain
 | `repograph scan` | Scan repository and generate graph |
 | `repograph sync` | Scan and update generated files |
 | `repograph check` | Validate architecture rules |
+| `repograph diff` | Compare graphs between git refs |
 | `repograph explain` | Explain project, module, or file |
 | `repograph list <type>` | List modules, layers, or violations |
 | `repograph visualize` | Generate Mermaid diagrams |
@@ -36,32 +45,47 @@ npx repograph explain
 | `repograph prompt "<task>"` | Generate AI-ready task context |
 | `repograph impact <file>` | Show change impact analysis |
 
+## GitHub Actions
+
+```yaml
+- uses: baasith6/RepoGraph-Protocol/action@v0.2.0
+  with:
+    fail-on: error
+    comment-pr: true
+```
+
 ## The `.repograph` Protocol
 
 ```txt
 .repograph/
-  project.yml       # Project metadata
-  modules.yml       # Business module mapping
-  architecture.yml  # Layers and dependency rules
-  rules.yml         # Custom architecture rules
-  tests.yml         # Test-to-module mapping
-  ai.yml            # AI tool instructions
-  decisions/        # Architecture Decision Records
-  generated/        # Auto-generated outputs
+  project.yml
+  modules.yml
+  architecture.yml
+  rules.yml
+  tests.yml
+  ai.yml
+  api.yml           # v0.2+
+  database.yml
+  risk.yml
+  ownership.yml
+  glossary.yml
+  decisions/
+  generated/
     graph.json
     graph.mmd
     context-pack.md
 ```
 
-See [docs/spec/0.1.0.md](docs/spec/0.1.0.md) for the full protocol specification.
+- Protocol v0.1: [docs/spec/0.1.0.md](docs/spec/0.1.0.md)
+- Protocol v0.2: [docs/spec/0.2.0.md](docs/spec/0.2.0.md)
 
 ## Example
 
 ```bash
 cd examples/clean-architecture-csharp-angular
-npx repograph scan
-npx repograph check
-npx repograph explain module Auth
+repograph scan
+repograph check
+repograph explain -m Auth
 ```
 
 ## Development
@@ -70,6 +94,13 @@ npx repograph explain module Auth
 pnpm install
 pnpm build
 pnpm test
+pnpm repograph -- --help
+```
+
+Roslyn analyzer (optional, requires .NET 8 SDK):
+
+```bash
+dotnet build tools/repograph-roslyn/Repograph.Roslyn.csproj
 ```
 
 ## License

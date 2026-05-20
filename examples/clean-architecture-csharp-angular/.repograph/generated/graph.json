@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "generatedAt": "2026-05-20T06:11:41.302Z",
+  "generatedAt": "2026-05-20T06:40:29.746Z",
   "project": {
     "name": "CarRentalExample",
     "root": "F:\\tic\\Repograph\\examples\\clean-architecture-csharp-angular",
@@ -101,18 +101,18 @@
       }
     },
     {
-      "id": "file:src/Web/Booking/BookingController.cs",
+      "id": "file:src/Web/Auth/AuthController.cs",
       "type": "FILE",
-      "label": "src/Web/Booking/BookingController.cs",
+      "label": "src/Web/Auth/AuthController.cs",
       "metadata": {
         "language": "csharp",
         "extension": ".cs"
       }
     },
     {
-      "id": "file:src/Web/Auth/AuthController.cs",
+      "id": "file:src/Web/Booking/BookingController.cs",
       "type": "FILE",
-      "label": "src/Web/Auth/AuthController.cs",
+      "label": "src/Web/Booking/BookingController.cs",
       "metadata": {
         "language": "csharp",
         "extension": ".cs"
@@ -256,136 +256,133 @@
       "id": "edge-8",
       "type": "BELONGS_TO",
       "source": "file:src/Web/Violation/BadDependency.cs",
-      "target": "layer:Web"
+      "target": "module:Shared"
     },
     {
       "id": "edge-9",
       "type": "BELONGS_TO",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "module:Booking"
+      "source": "file:src/Web/Violation/BadDependency.cs",
+      "target": "layer:Web"
     },
     {
       "id": "edge-10",
       "type": "BELONGS_TO",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "layer:Web"
+      "source": "file:src/Web/Auth/AuthController.cs",
+      "target": "module:Auth"
     },
     {
       "id": "edge-11",
       "type": "BELONGS_TO",
       "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "module:Auth"
+      "target": "layer:Web"
     },
     {
       "id": "edge-12",
       "type": "BELONGS_TO",
-      "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "layer:Web"
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "module:Booking"
     },
     {
       "id": "edge-13",
+      "type": "BELONGS_TO",
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "layer:Web"
+    },
+    {
+      "id": "edge-14",
       "type": "BELONGS_TO",
       "source": "file:src/Infrastructure/Persistence/AppDbContext.cs",
       "target": "layer:Infrastructure"
     },
     {
-      "id": "edge-14",
+      "id": "edge-15",
       "type": "BELONGS_TO",
       "source": "file:src/Infrastructure/Auth/AuthRepository.cs",
       "target": "module:Auth"
     },
     {
-      "id": "edge-15",
+      "id": "edge-16",
       "type": "BELONGS_TO",
       "source": "file:src/Infrastructure/Auth/AuthRepository.cs",
       "target": "layer:Infrastructure"
     },
     {
-      "id": "edge-16",
+      "id": "edge-17",
       "type": "BELONGS_TO",
       "source": "file:src/Domain/Booking/Booking.cs",
       "target": "module:Booking"
     },
     {
-      "id": "edge-17",
+      "id": "edge-18",
       "type": "BELONGS_TO",
       "source": "file:src/Domain/Booking/Booking.cs",
       "target": "layer:Domain"
-    },
-    {
-      "id": "edge-18",
-      "type": "BELONGS_TO",
-      "source": "file:src/Domain/Auth/User.cs",
-      "target": "module:Auth"
     },
     {
       "id": "edge-19",
       "type": "BELONGS_TO",
       "source": "file:src/Domain/Auth/User.cs",
-      "target": "layer:Domain"
+      "target": "module:Auth"
     },
     {
       "id": "edge-20",
       "type": "BELONGS_TO",
-      "source": "file:src/Application/Booking/CreateBookingCommand.cs",
-      "target": "module:Booking"
+      "source": "file:src/Domain/Auth/User.cs",
+      "target": "layer:Domain"
     },
     {
       "id": "edge-21",
       "type": "BELONGS_TO",
       "source": "file:src/Application/Booking/CreateBookingCommand.cs",
-      "target": "layer:Application"
+      "target": "module:Booking"
     },
     {
       "id": "edge-22",
       "type": "BELONGS_TO",
-      "source": "file:src/Application/Auth/LoginCommand.cs",
-      "target": "module:Auth"
+      "source": "file:src/Application/Booking/CreateBookingCommand.cs",
+      "target": "layer:Application"
     },
     {
       "id": "edge-23",
       "type": "BELONGS_TO",
       "source": "file:src/Application/Auth/LoginCommand.cs",
-      "target": "layer:Application"
+      "target": "module:Auth"
     },
     {
       "id": "edge-24",
+      "type": "BELONGS_TO",
+      "source": "file:src/Application/Auth/LoginCommand.cs",
+      "target": "layer:Application"
+    },
+    {
+      "id": "edge-25",
       "type": "BELONGS_TO",
       "source": "file:client/src/app/booking/booking.service.ts",
       "target": "module:Booking"
     },
     {
-      "id": "edge-25",
+      "id": "edge-26",
       "type": "BELONGS_TO",
       "source": "file:client/src/app/booking/booking.component.ts",
       "target": "module:Booking"
     },
     {
-      "id": "edge-26",
+      "id": "edge-27",
       "type": "BELONGS_TO",
       "source": "file:client/src/app/auth/login.component.ts",
       "target": "module:Auth"
     },
     {
-      "id": "edge-27",
+      "id": "edge-28",
       "type": "BELONGS_TO",
       "source": "file:client/src/app/auth/auth.service.ts",
       "target": "module:Auth"
     },
     {
-      "id": "edge-28",
-      "type": "DEPENDS_ON",
-      "source": "file:tests/Booking/BookingTests.cs",
-      "target": "file:namespace:CarRentalExample.Tests.Booking",
-      "metadata": {
-        "dependencyType": "import"
-      }
-    },
-    {
       "id": "edge-29",
       "type": "DEPENDS_ON",
-      "source": "file:tests/Auth/LoginTests.cs",
-      "target": "file:namespace:CarRentalExample.Tests.Auth",
+      "source": "file:tests/Booking/BookingTests.cs",
+      "target": "namespace:CarRentalExample.Tests.Booking",
       "metadata": {
         "dependencyType": "import"
       }
@@ -393,35 +390,35 @@
     {
       "id": "edge-30",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Violation/BadDependency.cs",
-      "target": "file:CarRentalExample.Infrastructure.Persistence",
+      "source": "file:tests/Auth/LoginTests.cs",
+      "target": "namespace:CarRentalExample.Tests.Auth",
       "metadata": {
-        "dependencyType": "using"
+        "dependencyType": "import"
       }
     },
     {
       "id": "edge-31",
       "type": "DEPENDS_ON",
       "source": "file:src/Web/Violation/BadDependency.cs",
-      "target": "file:namespace:CarRentalExample.Web.Violation",
-      "metadata": {
-        "dependencyType": "import"
-      }
-    },
-    {
-      "id": "edge-32",
-      "type": "DEPENDS_ON",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "file:CarRentalExample.Application.Booking",
+      "target": "CarRentalExample.Infrastructure.Persistence",
       "metadata": {
         "dependencyType": "using"
       }
     },
     {
+      "id": "edge-32",
+      "type": "DEPENDS_ON",
+      "source": "file:src/Web/Violation/BadDependency.cs",
+      "target": "namespace:CarRentalExample.Web.Violation",
+      "metadata": {
+        "dependencyType": "import"
+      }
+    },
+    {
       "id": "edge-33",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "file:Microsoft.AspNetCore.Mvc",
+      "source": "file:src/Web/Auth/AuthController.cs",
+      "target": "CarRentalExample.Application.Auth",
       "metadata": {
         "dependencyType": "using"
       }
@@ -429,17 +426,17 @@
     {
       "id": "edge-34",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "file:namespace:CarRentalExample.Web.Booking",
+      "source": "file:src/Web/Auth/AuthController.cs",
+      "target": "Microsoft.AspNetCore.Mvc",
       "metadata": {
-        "dependencyType": "import"
+        "dependencyType": "using"
       }
     },
     {
       "id": "edge-35",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Booking/BookingController.cs",
-      "target": "file:api:api/bookings",
+      "source": "file:src/Web/Auth/AuthController.cs",
+      "target": "namespace:CarRentalExample.Web.Auth",
       "metadata": {
         "dependencyType": "import"
       }
@@ -448,16 +445,16 @@
       "id": "edge-36",
       "type": "DEPENDS_ON",
       "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "file:CarRentalExample.Application.Auth",
+      "target": "file:api:api/auth",
       "metadata": {
-        "dependencyType": "using"
+        "dependencyType": "import"
       }
     },
     {
       "id": "edge-37",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "file:Microsoft.AspNetCore.Mvc",
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "CarRentalExample.Application.Booking",
       "metadata": {
         "dependencyType": "using"
       }
@@ -465,17 +462,17 @@
     {
       "id": "edge-38",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "file:namespace:CarRentalExample.Web.Auth",
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "Microsoft.AspNetCore.Mvc",
       "metadata": {
-        "dependencyType": "import"
+        "dependencyType": "using"
       }
     },
     {
       "id": "edge-39",
       "type": "DEPENDS_ON",
-      "source": "file:src/Web/Auth/AuthController.cs",
-      "target": "file:api:api/auth",
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "namespace:CarRentalExample.Web.Booking",
       "metadata": {
         "dependencyType": "import"
       }
@@ -483,8 +480,8 @@
     {
       "id": "edge-40",
       "type": "DEPENDS_ON",
-      "source": "file:src/Infrastructure/Persistence/AppDbContext.cs",
-      "target": "file:namespace:CarRentalExample.Infrastructure.Persistence",
+      "source": "file:src/Web/Booking/BookingController.cs",
+      "target": "file:api:api/bookings",
       "metadata": {
         "dependencyType": "import"
       }
@@ -492,17 +489,17 @@
     {
       "id": "edge-41",
       "type": "DEPENDS_ON",
-      "source": "file:src/Infrastructure/Auth/AuthRepository.cs",
-      "target": "file:CarRentalExample.Application.Auth",
+      "source": "file:src/Infrastructure/Persistence/AppDbContext.cs",
+      "target": "namespace:CarRentalExample.Infrastructure.Persistence",
       "metadata": {
-        "dependencyType": "using"
+        "dependencyType": "import"
       }
     },
     {
       "id": "edge-42",
       "type": "DEPENDS_ON",
       "source": "file:src/Infrastructure/Auth/AuthRepository.cs",
-      "target": "file:CarRentalExample.Domain.Auth",
+      "target": "CarRentalExample.Application.Auth",
       "metadata": {
         "dependencyType": "using"
       }
@@ -511,16 +508,16 @@
       "id": "edge-43",
       "type": "DEPENDS_ON",
       "source": "file:src/Infrastructure/Auth/AuthRepository.cs",
-      "target": "file:namespace:CarRentalExample.Infrastructure.Auth",
+      "target": "CarRentalExample.Domain.Auth",
       "metadata": {
-        "dependencyType": "import"
+        "dependencyType": "using"
       }
     },
     {
       "id": "edge-44",
       "type": "DEPENDS_ON",
-      "source": "file:src/Domain/Booking/Booking.cs",
-      "target": "file:namespace:CarRentalExample.Domain.Booking",
+      "source": "file:src/Infrastructure/Auth/AuthRepository.cs",
+      "target": "namespace:CarRentalExample.Infrastructure.Auth",
       "metadata": {
         "dependencyType": "import"
       }
@@ -528,8 +525,8 @@
     {
       "id": "edge-45",
       "type": "DEPENDS_ON",
-      "source": "file:src/Domain/Auth/User.cs",
-      "target": "file:namespace:CarRentalExample.Domain.Auth",
+      "source": "file:src/Domain/Booking/Booking.cs",
+      "target": "namespace:CarRentalExample.Domain.Booking",
       "metadata": {
         "dependencyType": "import"
       }
@@ -537,44 +534,44 @@
     {
       "id": "edge-46",
       "type": "DEPENDS_ON",
-      "source": "file:src/Application/Booking/CreateBookingCommand.cs",
-      "target": "file:CarRentalExample.Domain.Booking",
+      "source": "file:src/Domain/Auth/User.cs",
+      "target": "namespace:CarRentalExample.Domain.Auth",
       "metadata": {
-        "dependencyType": "using"
+        "dependencyType": "import"
       }
     },
     {
       "id": "edge-47",
       "type": "DEPENDS_ON",
       "source": "file:src/Application/Booking/CreateBookingCommand.cs",
-      "target": "file:namespace:CarRentalExample.Application.Booking",
+      "target": "CarRentalExample.Domain.Booking",
       "metadata": {
-        "dependencyType": "import"
+        "dependencyType": "using"
       }
     },
     {
       "id": "edge-48",
       "type": "DEPENDS_ON",
-      "source": "file:src/Application/Auth/LoginCommand.cs",
-      "target": "file:CarRentalExample.Domain.Auth",
+      "source": "file:src/Application/Booking/CreateBookingCommand.cs",
+      "target": "namespace:CarRentalExample.Application.Booking",
       "metadata": {
-        "dependencyType": "using"
+        "dependencyType": "import"
       }
     },
     {
       "id": "edge-49",
       "type": "DEPENDS_ON",
       "source": "file:src/Application/Auth/LoginCommand.cs",
-      "target": "file:namespace:CarRentalExample.Application.Auth",
+      "target": "CarRentalExample.Domain.Auth",
       "metadata": {
-        "dependencyType": "import"
+        "dependencyType": "using"
       }
     },
     {
       "id": "edge-50",
       "type": "DEPENDS_ON",
-      "source": "file:client/src/app/booking/booking.service.ts",
-      "target": "file:@angular/core",
+      "source": "file:src/Application/Auth/LoginCommand.cs",
+      "target": "namespace:CarRentalExample.Application.Auth",
       "metadata": {
         "dependencyType": "import"
       }
@@ -583,7 +580,7 @@
       "id": "edge-51",
       "type": "DEPENDS_ON",
       "source": "file:client/src/app/booking/booking.service.ts",
-      "target": "file:@angular/common/http",
+      "target": "file:@angular/core",
       "metadata": {
         "dependencyType": "import"
       }
@@ -591,8 +588,8 @@
     {
       "id": "edge-52",
       "type": "DEPENDS_ON",
-      "source": "file:client/src/app/booking/booking.component.ts",
-      "target": "file:@angular/core",
+      "source": "file:client/src/app/booking/booking.service.ts",
+      "target": "file:@angular/common/http",
       "metadata": {
         "dependencyType": "import"
       }
@@ -601,7 +598,7 @@
       "id": "edge-53",
       "type": "DEPENDS_ON",
       "source": "file:client/src/app/booking/booking.component.ts",
-      "target": "file:./booking.service",
+      "target": "file:@angular/core",
       "metadata": {
         "dependencyType": "import"
       }
@@ -610,7 +607,7 @@
       "id": "edge-54",
       "type": "DEPENDS_ON",
       "source": "file:client/src/app/booking/booking.component.ts",
-      "target": "file:angular:component",
+      "target": "file:./booking.service",
       "metadata": {
         "dependencyType": "import"
       }
@@ -618,8 +615,8 @@
     {
       "id": "edge-55",
       "type": "DEPENDS_ON",
-      "source": "file:client/src/app/auth/login.component.ts",
-      "target": "file:@angular/core",
+      "source": "file:client/src/app/booking/booking.component.ts",
+      "target": "angular:component",
       "metadata": {
         "dependencyType": "import"
       }
@@ -628,7 +625,7 @@
       "id": "edge-56",
       "type": "DEPENDS_ON",
       "source": "file:client/src/app/auth/login.component.ts",
-      "target": "file:./auth.service",
+      "target": "file:@angular/core",
       "metadata": {
         "dependencyType": "import"
       }
@@ -637,7 +634,7 @@
       "id": "edge-57",
       "type": "DEPENDS_ON",
       "source": "file:client/src/app/auth/login.component.ts",
-      "target": "file:angular:component",
+      "target": "file:./auth.service",
       "metadata": {
         "dependencyType": "import"
       }
@@ -645,8 +642,8 @@
     {
       "id": "edge-58",
       "type": "DEPENDS_ON",
-      "source": "file:client/src/app/auth/auth.service.ts",
-      "target": "file:@angular/core",
+      "source": "file:client/src/app/auth/login.component.ts",
+      "target": "angular:component",
       "metadata": {
         "dependencyType": "import"
       }
@@ -655,9 +652,63 @@
       "id": "edge-59",
       "type": "DEPENDS_ON",
       "source": "file:client/src/app/auth/auth.service.ts",
+      "target": "file:@angular/core",
+      "metadata": {
+        "dependencyType": "import"
+      }
+    },
+    {
+      "id": "edge-60",
+      "type": "DEPENDS_ON",
+      "source": "file:client/src/app/auth/auth.service.ts",
       "target": "file:@angular/common/http",
       "metadata": {
         "dependencyType": "import"
+      }
+    },
+    {
+      "id": "edge-61",
+      "type": "DEPENDS_ON",
+      "source": "file:src/Web/Web.csproj",
+      "target": "file:../Application/Application.csproj",
+      "metadata": {
+        "dependencyType": "project-reference"
+      }
+    },
+    {
+      "id": "edge-62",
+      "type": "DEPENDS_ON",
+      "source": "file:src/Web/Web.csproj",
+      "target": "file:../Infrastructure/Infrastructure.csproj",
+      "metadata": {
+        "dependencyType": "project-reference"
+      }
+    },
+    {
+      "id": "edge-63",
+      "type": "DEPENDS_ON",
+      "source": "file:src/Infrastructure/Infrastructure.csproj",
+      "target": "file:../Application/Application.csproj",
+      "metadata": {
+        "dependencyType": "project-reference"
+      }
+    },
+    {
+      "id": "edge-64",
+      "type": "DEPENDS_ON",
+      "source": "file:src/Infrastructure/Infrastructure.csproj",
+      "target": "file:../Domain/Domain.csproj",
+      "metadata": {
+        "dependencyType": "project-reference"
+      }
+    },
+    {
+      "id": "edge-65",
+      "type": "DEPENDS_ON",
+      "source": "file:src/Application/Application.csproj",
+      "target": "file:../Domain/Domain.csproj",
+      "metadata": {
+        "dependencyType": "project-reference"
       }
     }
   ],
@@ -691,8 +742,8 @@
     "fileCount": 15,
     "moduleCount": 3,
     "layerCount": 4,
-    "dependencyCount": 32,
-    "unmappedFiles": 4,
+    "dependencyCount": 37,
+    "unmappedFiles": 3,
     "violationCount": 3
   }
 }

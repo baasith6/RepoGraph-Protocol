@@ -1,10 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { parse as parseYaml } from "yaml";
+import { resolveSchemaDir } from "./schema-path.js";
 import type { ValidationError, ValidationResult } from "./types.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const SCHEMA_MAP: Record<string, string> = {
   "project.yml": "project.schema.json",
@@ -13,10 +11,15 @@ const SCHEMA_MAP: Record<string, string> = {
   "rules.yml": "rules.schema.json",
   "tests.yml": "tests.schema.json",
   "ai.yml": "ai.schema.json",
+  "api.yml": "api.schema.json",
+  "database.yml": "database.schema.json",
+  "risk.yml": "risk.schema.json",
+  "ownership.yml": "ownership.schema.json",
+  "glossary.yml": "glossary.schema.json",
 };
 
 function loadSchema(name: string): object {
-  const schemaPath = path.join(__dirname, "schemas", name);
+  const schemaPath = path.join(resolveSchemaDir(), name);
   return JSON.parse(fs.readFileSync(schemaPath, "utf-8")) as object;
 }
 

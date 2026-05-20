@@ -12,6 +12,7 @@ import { statsCommand } from "./commands/stats.js";
 import { exportCommand } from "./commands/export.js";
 import { promptCommand } from "./commands/prompt.js";
 import { impactCommand } from "./commands/impact.js";
+import { diffCommand } from "./commands/diff.js";
 
 export async function runCli(argv: string[]): Promise<void> {
   const program = new Command();
@@ -19,7 +20,7 @@ export async function runCli(argv: string[]): Promise<void> {
   program
     .name("repograph")
     .description("Machine-readable context for human and AI developers")
-    .version("0.1.0");
+    .version("0.2.0");
 
   program
     .command("init")
@@ -80,6 +81,14 @@ export async function runCli(argv: string[]): Promise<void> {
     .command("impact <file>")
     .description("Show impact of changing a file")
     .action(impactCommand);
+
+  program
+    .command("diff")
+    .description("Compare RepoGraph between git refs")
+    .option("--base <ref>", "Base git ref", "main")
+    .option("--head <ref>", "Head git ref", "HEAD")
+    .option("-o, --output <path>", "Write diff report to file")
+    .action(diffCommand);
 
   await program.parseAsync(argv);
 }

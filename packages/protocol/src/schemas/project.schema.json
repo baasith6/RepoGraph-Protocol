@@ -9,7 +9,7 @@
       "required": ["name", "version"],
       "properties": {
         "name": { "type": "string", "const": "RepoGraph" },
-        "version": { "type": "string", "pattern": "^0\\.1\\.\\d+$" }
+        "version": { "type": "string", "pattern": "^0\\.(1|2)\\.\\d+$" }
       }
     },
     "project": {

@@ -18,6 +18,7 @@ import { GraphBuilder } from "@repograph/graph-core";
 import type { RepographConfig } from "@repograph/shared";
 import { normalizePath } from "@repograph/shared";
 import { analyzeCSharpFile, analyzeCsproj } from "@repograph/analyzer-csharp";
+import { runRoslynAnalyzer } from "@repograph/analyzer-csharp-roslyn";
 import { analyzeTypeScriptFile } from "@repograph/analyzer-typescript";
 import type { FileDependency, ScanResult, ScannedFile } from "./types.js";
 
@@ -121,8 +122,11 @@ export async function scanRepository(
   });
 
   const files: ScannedFile[] = [];
-  const dependencies: FileDependency[] = [];
+  let dependencies: FileDependency[] = [];
   const unmappedFiles: string[] = [];
+  let symbols: ScanResult["symbols"] = [];
+  let apiEndpoints: ScanResult["apiEndpoints"] = [];
+  let analyzer: ScanResult["analyzer"] = "heuristic";
 
   const detectedStack = {
     csharp: false,
@@ -180,18 +184,33 @@ export async function scanRepository(
     }
   }
 
-  // Scan csproj files for project references
   const csprojFiles = await glob("**/*.csproj", { cwd: root, nodir: true });
-  for (const csproj of csprojFiles) {
-    try {
-      const content = await fs.readFile(path.join(root, csproj), "utf-8");
-      dependencies.push(...analyzeCsproj(normalizePath(csproj), content));
-    } catch {
-      // skip
+  if (csprojFiles.length > 0) {
+    detectedStack.dotnet = true;
+    detectedStack.csharp = true;
+
+    const roslyn = await runRoslynAnalyzer(root);
+    if (roslyn && roslyn.dependencies.length > 0) {
+      analyzer = "roslyn";
+      dependencies = roslyn.dependencies.map((d) => ({
+        source: d.source,
+        target: d.target,
+        type: d.type as FileDependency["type"],
+      }));
+      symbols = roslyn.symbols;
+      apiEndpoints = roslyn.apiEndpoints;
+    } else {
+      for (const csproj of csprojFiles) {
+        try {
+          const content = await fs.readFile(path.join(root, csproj), "utf-8");
+          dependencies.push(...analyzeCsproj(normalizePath(csproj), content));
+        } catch {
+          // skip
+        }
+      }
     }
   }
 
-  // Check for angular.json
   try {
     await fs.access(path.join(root, "angular.json"));
     detectedStack.angular = true;
@@ -199,7 +218,7 @@ export async function scanRepository(
     // not angular
   }
 
-  return { files, dependencies, unmappedFiles, detectedStack };
+  return { files, dependencies, unmappedFiles, symbols, apiEndpoints, analyzer, detectedStack };
 }
 
 export function buildGraphFromScan(
@@ -275,12 +294,40 @@ export function buildGraphFromScan(
     }
   }
 
+  for (const sym of scan.symbols) {
+    const symId = `class:${sym.file}:${sym.name}`;
+    builder.addNode({
+      id: symId,
+      type: sym.kind === "CLASS" ? "CLASS" : "CLASS",
+      label: sym.name,
+      metadata: { namespace: sym.namespace, file: sym.file },
+    });
+    builder.addEdge("BELONGS_TO", symId, `file:${sym.file}`);
+  }
+
+  for (const api of scan.apiEndpoints) {
+    const apiId = `api:${api.file}:${api.method}`;
+    builder.addNode({
+      id: apiId,
+      type: "API_ENDPOINT",
+      label: `${api.method} ${api.route}`,
+      metadata: { controller: api.controller, route: api.route, file: api.file },
+    });
+    builder.addEdge("EXPOSES", `file:${api.file}`, apiId);
+  }
+
   for (const dep of scan.dependencies) {
-    const sourceId = `file:${dep.source}`;
-    const targetId = dep.target.startsWith("file:")
-      ? dep.target
-      : `file:${dep.target}`;
-    if (scan.files.some((f) => f.path === dep.source)) {
+    const sourceIsFile = scan.files.some((f) => f.path === dep.source);
+    const sourceId = sourceIsFile ? `file:${dep.source}` : `file:${dep.source}`;
+    let targetId = dep.target;
+    if (!targetId.startsWith("file:") && !targetId.includes("/") && !targetId.endsWith(".csproj")) {
+      targetId = dep.target;
+    } else if (dep.target.endsWith(".csproj")) {
+      targetId = `file:${dep.target}`;
+    } else if (!dep.target.startsWith("file:")) {
+      targetId = dep.target.includes("/") ? `file:${dep.target}` : dep.target;
+    }
+    if (sourceIsFile || dep.source.endsWith(".csproj")) {
       builder.addEdge("DEPENDS_ON", sourceId, targetId, { dependencyType: dep.type });
     }
   }

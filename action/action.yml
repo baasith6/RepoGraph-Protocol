@@ -1,0 +1,119 @@
+name: RepoGraph Check
+description: Validate architecture, scan repository, and run RepoGraph checks
+branding:
+  icon: git-branch
+  color: blue
+
+inputs:
+  working-directory:
+    description: Directory containing .repograph
+    required: false
+    default: .
+  fail-on:
+    description: Minimum severity to fail (warning, error, critical)
+    required: false
+    default: error
+  upload-artifact:
+    description: Upload generated graph.json as artifact
+    required: false
+    default: "true"
+  comment-pr:
+    description: Post summary comment on pull requests
+    required: false
+    default: "true"
+
+outputs:
+  violation-count:
+    description: Number of architecture violations found
+  passed:
+    description: Whether checks passed
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "22"
+
+    - name: Install RepoGraph CLI
+      shell: bash
+      run: npm install -g @repograph/cli@0.2.0
+
+    - name: RepoGraph validate
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: repograph validate
+
+    - name: RepoGraph scan
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: repograph scan
+
+    - name: RepoGraph check
+      id: check
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        set +e
+        if [ "${{ inputs.fail-on }}" = "strict" ]; then
+          repograph check --strict
+        else
+          repograph check
+        fi
+        code=$?
+        echo "passed=$([ $code -eq 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+        exit $code
+
+    - name: Collect violation count
+      id: stats
+      if: always()
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        count=$(repograph list violations 2>/dev/null | grep -c '^\s*\[' || echo 0)
+        echo "violation-count=$count" >> "$GITHUB_OUTPUT"
+
+    - name: Upload graph artifact
+      if: inputs.upload-artifact == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: repograph-graph
+        path: ${{ inputs.working-directory }}/.repograph/generated/graph.json
+        if-no-files-found: warn
+
+    - name: Comment PR summary
+      if: github.event_name == 'pull_request' && inputs.comment-pr == 'true'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          const wd = '${{ inputs.working-directory }}';
+          const graphPath = path.join(wd, '.repograph/generated/graph.json');
+          let body = '## RepoGraph Report\n\n';
+          if (fs.existsSync(graphPath)) {
+            const graph = JSON.parse(fs.readFileSync(graphPath, 'utf8'));
+            body += `- Files: ${graph.stats.fileCount}\n`;
+            body += `- Modules: ${graph.stats.moduleCount}\n`;
+            body += `- Violations: ${graph.stats.violationCount}\n\n`;
+            if (graph.violations?.length) {
+              body += '### Violations\n\n';
+              for (const v of graph.violations.slice(0, 20)) {
+                body += `- **[${v.severity}]** ${v.message}\n`;
+              }
+              if (graph.violations.length > 20) {
+                body += `\n_...and ${graph.violations.length - 20} more_\n`;
+              }
+            } else {
+              body += 'No architecture violations detected.\n';
+            }
+          } else {
+            body += '_Graph not generated._\n';
+          }
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body
+          });

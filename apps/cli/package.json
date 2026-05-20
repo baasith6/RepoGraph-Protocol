@@ -1,12 +1,46 @@
 {
   "name": "@repograph/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "CLI for RepoGraph Protocol — machine-readable context for human and AI developers",
   "type": "module",
+  "license": "Apache-2.0",
+  "author": "RepoGraph Contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baasith6/RepoGraph-Protocol.git",
+    "directory": "apps/cli"
+  },
+  "homepage": "https://github.com/baasith6/RepoGraph-Protocol#readme",
+  "bugs": {
+    "url": "https://github.com/baasith6/RepoGraph-Protocol/issues"
+  },
+  "keywords": [
+    "repograph",
+    "architecture",
+    "codebase",
+    "ai-tools",
+    "clean-architecture",
+    "static-analysis",
+    "cursor",
+    "devtools"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "bin": {
     "repograph": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc",
+    "build:bundle": "node ../../scripts/bundle-cli.mjs",
+    "prepublishOnly": "cd ../.. && pnpm build && node scripts/bundle-cli.mjs",
+    "prepack": "node ../../scripts/bundle-cli.mjs",
     "dev": "tsc --watch",
     "test": "echo no tests",
     "lint": "tsc --noEmit"
@@ -22,9 +56,11 @@
     "@repograph/exporter-mermaid": "workspace:*",
     "@repograph/exporter-markdown": "workspace:*",
     "@repograph/exporter-cursor": "workspace:*",
+    "@repograph/analyzer-csharp-roslyn": "workspace:*",
     "commander": "^12.1.0"
   },
   "devDependencies": {
+    "esbuild": "^0.24.0",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }

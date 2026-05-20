@@ -1,6 +1,6 @@
 # RepoGraph Context Pack
 
-Generated: 2026-05-20T06:11:41.302Z
+Generated: 2026-05-20T06:40:29.746Z
 
 ## Project
 
@@ -18,7 +18,7 @@ Authentication and authorization
 Booking management
 
 ### Shared
-Shared utilities
+Shared utilities and samples
 
 ## Architecture Layers
 
@@ -48,8 +48,8 @@ Shared utilities
 
 - Files scanned: 15
 - Modules: 3
-- Dependencies: 32
-- Unmapped files: 4
+- Dependencies: 37
+- Unmapped files: 3
 
 ## Layer Diagram
 

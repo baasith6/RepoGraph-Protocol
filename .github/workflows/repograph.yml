@@ -48,7 +48,9 @@ jobs:
         run: |
           node ../../apps/cli/dist/index.js validate
           node ../../apps/cli/dist/index.js scan
-          node ../../apps/cli/dist/index.js stats
+          node ../../apps/cli/dist/index.js check || true
+          node ../../apps/cli/dist/index.js list violations
+          node ../../apps/cli/dist/index.js diff --base HEAD~1 --head HEAD || true
 
       - name: Verify architecture violation detected
         working-directory: examples/clean-architecture-csharp-angular

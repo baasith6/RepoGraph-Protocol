@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "risk.schema.json",
+  "type": "object",
+  "properties": {
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "risk"],
+        "properties": {
+          "path": { "type": "string" },
+          "risk": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+          "reason": { "type": "string" }
+        }
+      }
+    }
+  }
+}

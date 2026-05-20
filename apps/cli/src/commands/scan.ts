@@ -46,7 +46,7 @@ export async function scanRepositoryAndWrite(): Promise<void> {
     "utf-8"
   );
 
-  log("info", `Scan complete: ${graph.stats.fileCount} files, ${graph.stats.moduleCount} modules`);
+  log("info", `Scan complete (${scan.analyzer}): ${graph.stats.fileCount} files, ${graph.stats.moduleCount} modules`);
   log("info", `Dependencies: ${graph.stats.dependencyCount}, Unmapped: ${graph.stats.unmappedFiles}`);
   if (graph.violations.length > 0) {
     log("warn", `Violations found: ${graph.violations.length} (run 'repograph check' for details)`);

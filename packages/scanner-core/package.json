@@ -19,6 +19,7 @@
     "@repograph/shared": "workspace:*",
     "@repograph/graph-core": "workspace:*",
     "@repograph/analyzer-csharp": "workspace:*",
+    "@repograph/analyzer-csharp-roslyn": "workspace:*",
     "@repograph/analyzer-typescript": "workspace:*",
     "glob": "^11.0.0",
     "ignore": "^6.0.2",

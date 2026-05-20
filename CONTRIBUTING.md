@@ -4,7 +4,7 @@ Thank you for your interest in contributing to RepoGraph Protocol.
 
 ## Development Setup
 
-1. Clone the repository
+1. Clone https://github.com/baasith6/RepoGraph-Protocol
 2. Install [pnpm](https://pnpm.io/) (v9+)
 3. Run `pnpm install`
 4. Run `pnpm build`
@@ -14,16 +14,28 @@ Thank you for your interest in contributing to RepoGraph Protocol.
 
 ```txt
 apps/cli/              # CLI application
+apps/mcp-server/       # MCP server (v0.3+)
+action/                # GitHub Composite Action
 packages/protocol/     # JSON Schema + validation
 packages/scanner-core/ # Repository scanner
 packages/graph-core/   # Graph data model
 packages/rule-engine/  # Architecture rule engine
 packages/analyzers/    # Language analyzers
 packages/exporters/    # Output formatters
-packages/templates/    # Init templates
+tools/repograph-roslyn/# .NET Roslyn worker
 examples/              # Example repositories
 docs/spec/             # Protocol documentation
 ```
+
+## Release Process
+
+1. Update version in `apps/cli/package.json` (and root if needed)
+2. Update `CHANGELOG.md` with release notes
+3. Run `pnpm build && pnpm build:cli-bundle`
+4. Run `pnpm publish:cli` (requires npm login and `@repograph` scope access)
+5. Tag: `git tag v0.x.y && git push origin v0.x.y`
+6. Create GitHub release pointing to the tag
+7. Update `action/action.yml` default CLI version if needed
 
 ## Protocol Changes
 
