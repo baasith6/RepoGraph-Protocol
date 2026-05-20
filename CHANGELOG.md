@@ -1,19 +1,26 @@
 # Changelog
 
-## Unreleased
+All notable changes are documented here. GitHub Release notes live in [docs/releases/](docs/releases/).
+
+## [1.0.0] - 2026-05-20
+
+First public release — recommended for new adopters.
 
 ### Added
 
-- MCP server (`apps/mcp-server`) with tools: get_graph, explain, list_violations, impact, scan
-- VS Code extension (`apps/vscode`) — module tree and violations panel
-- TypeScript compiler API analyzer when `tsconfig.json` is present
-- Auto-sync `api.yml` and `database.yml` from scan results
-- CI jobs for published npm CLI and composite action
-- [SECURITY.md](SECURITY.md), [docs/dogfood-report.md](docs/dogfood-report.md)
+- Strong README with install, quick start, demo preview, and three examples
+- Examples: [nodejs-layered-api](examples/nodejs-layered-api/), [dotnet-modular-monolith](examples/dotnet-modular-monolith/)
+- [examples/README.md](examples/README.md) index
+- GitHub Releases workflow and [docs/releases/README.md](docs/releases/README.md)
+- Demo asset [docs/assets/demo-flow.svg](docs/assets/demo-flow.svg) + [RECORD_DEMO.md](docs/assets/RECORD_DEMO.md)
+- [.github/TOPICS.md](.github/TOPICS.md) — suggested repository topics
 
-### Fixed
+### Includes (from prior releases)
 
-- ESM `__filename` crash in `@repograph/analyzer-csharp-roslyn` when running CLI from monorepo
+- MCP server, VS Code extension (monorepo)
+- Ownership / risk / glossary sync via `repograph sync`
+- `@repographprotocol/cli@0.2.1` on npm
+- GitHub Action `action@v0.2.1`
 
 ## [0.2.1] - 2026-05-20
 

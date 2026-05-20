@@ -1,0 +1,15 @@
+architecture:
+  style: Layered
+
+layers:
+  Api:
+    path: "src/api"
+    allowed_dependencies: [Services]
+
+  Services:
+    path: "src/services"
+    allowed_dependencies: [Domain]
+
+  Domain:
+    path: "src/domain"
+    allowed_dependencies: []

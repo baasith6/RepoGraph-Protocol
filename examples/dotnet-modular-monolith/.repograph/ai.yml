@@ -1,0 +1,7 @@
+ai:
+  instructions:
+    - Keep Catalog and Orders module boundaries clear
+    - Api references Application only
+  exclude_paths:
+    - "bin/**"
+    - "obj/**"

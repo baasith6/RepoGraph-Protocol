@@ -1,0 +1,10 @@
+rules:
+  - id: api-no-domain
+    description: API layer must not import Domain directly
+    severity: error
+    type: forbidden-dependency
+    from: Api
+    to: Domain
+
+enforcement:
+  mode: error

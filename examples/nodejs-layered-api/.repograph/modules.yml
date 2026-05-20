@@ -1,0 +1,12 @@
+modules:
+  - name: Orders
+    description: Order placement and retrieval
+    paths:
+      - "src/**/order*"
+      - "src/**/orders*"
+    critical: true
+
+  - name: Shared
+    description: Shared domain types
+    paths:
+      - "src/domain/**"

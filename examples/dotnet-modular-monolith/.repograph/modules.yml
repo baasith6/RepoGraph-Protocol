@@ -1,0 +1,12 @@
+modules:
+  - name: Catalog
+    description: Product catalog
+    paths:
+      - "src/**/Catalog/**"
+    critical: false
+
+  - name: Orders
+    description: Order placement
+    paths:
+      - "src/**/Orders/**"
+    critical: true

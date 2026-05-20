@@ -5,12 +5,18 @@ Example repository for RepoGraph Protocol demonstrating Clean Architecture with 
 ## Usage
 
 ```bash
-# From monorepo root after build:
+npm install -g @repographprotocol/cli@0.2.1
 cd examples/clean-architecture-csharp-angular
+repograph scan
+repograph check
+repograph explain -m Auth
+repograph impact src/Web/Violation/BadDependency.cs
+```
+
+Monorepo development:
+
+```bash
 node ../../apps/cli/dist/index.js scan
-node ../../apps/cli/dist/index.js check
-node ../../apps/cli/dist/index.js explain module Auth
-node ../../apps/cli/dist/index.js impact src/Web/Violation/BadDependency.cs
 ```
 
 ## Intentional Violation

@@ -30,10 +30,13 @@ docs/spec/             # Protocol documentation
 
 ## Release Process
 
+We publish **GitHub Releases** with notes in [`docs/releases/`](docs/releases/README.md) so users can follow changes without reading the full git history.
+
 1. Update version in [`apps/cli/package.json`](apps/cli/package.json) and [`apps/cli/src/cli.ts`](apps/cli/src/cli.ts)
-2. Update [`CHANGELOG.md`](CHANGELOG.md)
-3. Run `pnpm build && pnpm build:cli-bundle`
-4. Publish (requires `@repographprotocol` org access):
+2. Add [`docs/releases/vX.Y.Z.md`](docs/releases/) release notes (user-facing summary)
+3. Update [`CHANGELOG.md`](CHANGELOG.md)
+4. Run `pnpm build && pnpm build:cli-bundle`
+5. Publish npm (requires `@repographprotocol` org access):
 
 ```powershell
 $env:NPM_TOKEN = "npm_..."   # never commit; see SECURITY.md
@@ -42,8 +45,8 @@ pnpm publish:cli
 
 Or with 2FA: `$env:NPM_OTP = "123456"; pnpm publish:cli`
 
-5. Tag: `git tag v0.x.y && git push origin v0.x.y`
-6. Create GitHub release from tag (see [`docs/releases/`](docs/releases/)):
+6. Tag: `git tag v0.x.y && git push origin v0.x.y` (pushing `v*` triggers [`.github/workflows/release.yml`](.github/workflows/release.yml))
+7. Create or verify GitHub release (see [`docs/releases/`](docs/releases/)):
 
 ```bash
 GITHUB_TOKEN=ghp_... node scripts/create-github-release.mjs v0.x.y
@@ -51,7 +54,8 @@ GITHUB_TOKEN=ghp_... node scripts/create-github-release.mjs v0.x.y
 
 Or draft manually on GitHub Releases using the matching `docs/releases/vX.Y.Z.md` file.
 
-7. Update [`action/action.yml`](action/action.yml) pinned CLI version
+8. Update [`action/action.yml`](action/action.yml) pinned CLI version when shipping a new CLI version
+9. Refresh README install pin and [docs/releases/README.md](docs/releases/README.md) index if needed
 
 ## Security
 

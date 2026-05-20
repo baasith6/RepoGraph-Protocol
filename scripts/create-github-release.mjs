@@ -23,14 +23,39 @@ const body = fs.existsSync(notesPath)
   ? fs.readFileSync(notesPath, "utf-8")
   : `Release ${tag}`;
 
+const headers = {
+  Authorization: `Bearer ${token}`,
+  Accept: "application/vnd.github+json",
+  "Content-Type": "application/json",
+  "X-GitHub-Api-Version": "2022-11-28",
+};
+
+const existing = await fetch(
+  `https://api.github.com/repos/${owner}/${repo}/releases/tags/${encodeURIComponent(tag)}`,
+  { headers }
+);
+if (existing.ok) {
+  const rel = await existing.json();
+  const patch = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/releases/${rel.id}`,
+    {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({ name: tag, body }),
+    }
+  );
+  if (!patch.ok) {
+    console.error(`Failed to update release (${patch.status}):`, await patch.text());
+    process.exit(1);
+  }
+  const data = await patch.json();
+  console.log("Release updated:", data.html_url);
+  process.exit(0);
+}
+
 const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases`, {
   method: "POST",
-  headers: {
-    Authorization: `Bearer ${token}`,
-    Accept: "application/vnd.github+json",
-    "Content-Type": "application/json",
-    "X-GitHub-Api-Version": "2022-11-28",
-  },
+  headers,
   body: JSON.stringify({
     tag_name: tag,
     name: tag,

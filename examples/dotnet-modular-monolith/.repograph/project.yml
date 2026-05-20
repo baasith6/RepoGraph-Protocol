@@ -1,0 +1,14 @@
+protocol:
+  name: RepoGraph
+  version: 0.2.0
+
+project:
+  name: ModularMonolith
+  description: .NET modular monolith example for RepoGraph
+  type: Application
+  architecture: ModularMonolith
+  primary_language: CSharp
+
+repository:
+  provider: GitHub
+  default_branch: main

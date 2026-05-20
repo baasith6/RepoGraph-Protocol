@@ -1,0 +1,14 @@
+protocol:
+  name: RepoGraph
+  version: 0.2.0
+
+project:
+  name: NodeLayeredApi
+  description: Layered Node.js API example for RepoGraph
+  type: Application
+  architecture: Layered
+  primary_language: TypeScript
+
+repository:
+  provider: GitHub
+  default_branch: main

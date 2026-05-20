@@ -1,0 +1,7 @@
+ai:
+  instructions:
+    - Respect Api → Services → Domain layering
+    - Keep Orders module changes isolated
+  exclude_paths:
+    - "node_modules/**"
+    - "dist/**"
